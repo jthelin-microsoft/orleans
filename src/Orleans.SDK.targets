@@ -11,6 +11,10 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     <SnkFile>$(AssemblyOriginatorKeyFile)</SnkFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
+    <_ExePrefix>mono</_ExePrefix>
+  </PropertyGroup>
+
   <!-- Work out the path to ClientGenerator.exe -->
   <Choose>
     <!-- Using Orleans NuGet packages -->
@@ -86,7 +90,7 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     <WriteLinesToFile Overwrite="true" File="$(ArgsFile)" Lines="/nomerge"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/in:$(IntermediateOutputPath)$(TargetName)$(TargetExt)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/key:$(SnkFile)"/>
-    <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$([MSBuild]::Escape($(DefineConstants)))"/>
+    <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$(DefineConstants.Replace(';','%3B'))"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(Import->'/imports:%(Identity)')"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/rns:$(RootNamespace)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(ReferencePath->'/r:%(Identity)')"/>
@@ -99,7 +103,7 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     <WriteLinesToFile File="$(ArgsFile)" Lines="/OptionInfer:$(OptionInfer)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/MyType:$(MyType)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(Compile->'/src:%(Identity)')"/>
-    <Exec Command='"$(CodeGenToolExe)" "@$(ArgsFile)"' />
+    <Exec Command='$(_ExePrefix) "$(CodeGenToolExe)" "@$(ArgsFile)"' />
   </Target>
 
   <!-- This target is run just after Compile for an Orleans Grain Implementation Project -->
@@ -124,7 +128,11 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     <WriteLinesToFile Overwrite="true" File="$(ArgsFile)" Lines="/svr"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/in:$(IntermediateOutputPath)$(TargetName)$(TargetExt)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/key:$(SnkFile)"/>
-    <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$([MSBuild]::Escape($(DefineConstants)))"/>
+    <!-- Escape ';' characters in string, so can round trip ok in build string.
+         Equivalent to $([MSBuild]::Escape($(DefineConstants))
+         which is not available in mono xbuild.
+     -->
+    <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$(DefineConstants.Replace(';','%3B'))"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(Import->'/imports:%(Identity)')"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/rns:$(RootNamespace)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(ReferencePath->'/r:%(Identity)')"/>
@@ -137,7 +145,7 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     <WriteLinesToFile File="$(ArgsFile)" Lines="/OptionInfer:$(OptionInfer)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/MyType:$(MyType)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(Compile->'/src:%(Identity)')"/>
-    <Exec Command='"$(CodeGenToolExe)" "@$(ArgsFile)"'
+    <Exec Command='$(_ExePrefix) "$(CodeGenToolExe)" "@$(ArgsFile)"'
           Outputs='$(IntermediateOutputPath)$(TargetName)$(TargetExt)' />
   </Target>
 
