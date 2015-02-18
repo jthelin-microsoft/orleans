@@ -1,6 +1,5 @@
-﻿pushd `dirname $0` > /dev/null
-ScriptDir=`pwd`
-popd > /dev/null
+﻿#!/bin/bash
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 siloName="MonoSilo"
 ##if [ -e "$1" ]
@@ -9,7 +8,7 @@ siloName="MonoSilo"
 ##  shift
 ##fi
 
-cd $ScriptDir
+cd $DIR
 
 echo SiloName= $siloName
 echo Starting Orleans node in `pwd`
