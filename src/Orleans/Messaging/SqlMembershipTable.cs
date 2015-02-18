@@ -249,12 +249,14 @@ namespace Orleans.Runtime.MembershipService
             int version = 0;
             string versionETag = null;
 
-            using (SqlDataReader results = await command.ExecuteReaderAsync())
+            using (var results = await command.ExecuteReaderAsync())
             {
                 while (await results.ReadAsync())
                 {
                     string eTag;
-                    var entry = ConvertFromRow(results, out eTag, out version, out versionETag);
+                    var entry = ConvertFromRow(
+                        (SqlDataReader)results, // This cast is needed to build on Mono 
+                        out eTag, out version, out versionETag);
                     memEntries.Add(new Tuple<MembershipEntry, string>(entry, eTag));
                 }
             }
