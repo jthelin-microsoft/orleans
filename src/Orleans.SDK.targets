@@ -38,6 +38,11 @@ Copyright (C) Microsoft Corporation. All rights reserved.
   </Choose>
 
   <Choose>
+    <When Condition="'$(CodeGenToolExeDir)' == ''">
+      <PropertyGroup>
+        <CodeGenToolExe>$(OrleansReferencesBase)ClientGenerator.exe</CodeGenToolExe>
+      </PropertyGroup>
+    </When>
     <When Condition="HasTrailingSlash('$(CodeGenToolExeDir)')">
       <PropertyGroup>
         <CodeGenToolExe>$(CodeGenToolExeDir)ClientGenerator.exe</CodeGenToolExe>
