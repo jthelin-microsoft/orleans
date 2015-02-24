@@ -88,6 +88,11 @@ Copyright (C) Microsoft Corporation. All rights reserved.
 - Using CodeGenToolExe location=$(CodeGenToolExe)
 " />
     <MakeDir Directories="$(IntermediateOutputPath)Generated"/>
+    <Touch Files="$(ProjectDir)Properties\orleans.codegen.cs"
+        Condition="!Exists('$(ProjectDir)Properties\orleans.codegen.cs')"
+        ForceTouch="true"
+        AlwaysCreate="true"
+        ContinueOnError="true" />
     <PropertyGroup>
       <ArgsFile>$(IntermediateOutputPath)$(TargetName).codegen.args.txt</ArgsFile>
     </PropertyGroup>
@@ -95,7 +100,10 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     <WriteLinesToFile Overwrite="true" File="$(ArgsFile)" Lines="/nomerge"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/in:$(IntermediateOutputPath)$(TargetName)$(TargetExt)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/key:$(SnkFile)"/>
-    <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$(DefineConstants.Replace(';','%3B'))"/>
+    <!--
+        <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$(DefineConstants.Replace(';','%3B'))"/>
+    -->
+    <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$(DefineConstants)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(Import->'/imports:%(Identity)')"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/rns:$(RootNamespace)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(ReferencePath->'/r:%(Identity)')"/>
@@ -125,6 +133,11 @@ Copyright (C) Microsoft Corporation. All rights reserved.
 - OrleansSDK=$(OrleansSDK)
 - Using CodeGenToolExe location=$(CodeGenToolExe)
 "/>
+    <Touch Files="$(ProjectDir)Properties\orleans.codegen.cs"
+        Condition="!Exists('$(ProjectDir)Properties\orleans.codegen.cs')"
+        ForceTouch="true"
+        AlwaysCreate="true"
+        ContinueOnError="true" />
     <PropertyGroup>
       <ArgsFile>$(IntermediateOutputPath)$(TargetName).codegen.args.txt</ArgsFile>
     </PropertyGroup>
@@ -137,7 +150,10 @@ Copyright (C) Microsoft Corporation. All rights reserved.
          Equivalent to $([MSBuild]::Escape($(DefineConstants))
          which is not available in mono xbuild.
      -->
+<!--
     <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$(DefineConstants.Replace(';','%3B'))"/>
+-->
+    <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$(DefineConstants)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(Import->'/imports:%(Identity)')"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/rns:$(RootNamespace)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(ReferencePath->'/r:%(Identity)')"/>
