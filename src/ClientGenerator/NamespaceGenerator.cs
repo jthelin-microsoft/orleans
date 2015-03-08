@@ -251,6 +251,7 @@ namespace Orleans.CodeGeneration
             ReferencedNamespace.Imports.Add(new CodeNamespaceImport("System.Runtime.Serialization.Formatters.Binary"));
             ReferencedNamespace.Imports.Add(new CodeNamespaceImport("System.IO"));
             ReferencedNamespace.Imports.Add(new CodeNamespaceImport("System.Collections.Generic"));
+            ReferencedNamespace.Imports.Add(new CodeNamespaceImport("System.Threading.Tasks"));
 
             MethodInfo[] methods = GrainInterfaceData.GetMethods(interfaceData.Type);
             AddMethods(methods, referenceClass, genericTypeParam, isObserver);
@@ -482,7 +483,6 @@ namespace Orleans.CodeGeneration
                             TypeUtils.GetFullName(methodInfo.DeclaringType, language)));
 
                 returnType = CreateCodeTypeReference(methodInfo.ReturnType, language);
-                //returnType = new CodeTypeReference(methodInfo.ReturnType);
             }
             else
                 returnType = new CodeTypeReference(typeof (void));
@@ -578,15 +578,19 @@ namespace Orleans.CodeGeneration
 
         private static CodeTypeReference CreateCodeTypeReference(Type type, Language language)
         {
-            var baseName = TypeUtils.GetSimpleTypeName(type, language: language);
-            if (!type.IsGenericParameter) 
-                baseName = type.Namespace + "." + baseName;
+            CodeTypeReference codeRef;
+#if MONO
+            codeRef = new CodeTypeReference(type); // HACK
+#else
+            string baseName = TypeUtils.GetSimpleTypeName(type, language: language);
+            //if (!type.IsGenericParameter) 
+            //    baseName = type.Namespace + "." + baseName;
 
-            var codeRef = new CodeTypeReference(baseName);
+            codeRef = new CodeTypeReference(baseName);
             if ((type.IsGenericType || type.IsGenericTypeDefinition))
                 foreach (Type genericArg in type.GetGenericArguments())
                     codeRef.TypeArguments.Add(CreateCodeTypeReference(genericArg, language));
-
+#endif
             return codeRef;
         }
 
