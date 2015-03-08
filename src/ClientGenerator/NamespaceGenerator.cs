@@ -464,8 +464,8 @@ namespace Orleans.CodeGeneration
                             methodInfo.ReturnType.FullName, methodInfo.Name,
                             TypeUtils.GetFullName(methodInfo.DeclaringType, language)));
 
-                returnType = CreateCodeTypeReference(methodInfo.ReturnType, language);
-                //returnType = new CodeTypeReference(methodInfo.ReturnType);
+                //returnType = CreateCodeTypeReference(methodInfo.ReturnType, language);
+                returnType = new CodeTypeReference(methodInfo.ReturnType);
             }
             else
                 returnType = new CodeTypeReference(typeof (void));
