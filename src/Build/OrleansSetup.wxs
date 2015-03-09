@@ -108,7 +108,8 @@
                 <File Id="File_SE_OrleansManager.exe.config" Name="OrleansManager.exe.config" Source="$(var.SDK_binaries_server_src)\OrleansManager.exe.config" />
                 <File Id="File_SE_OrleansProviders.dll" Name="OrleansProviders.dll" Source="$(var.SDK_binaries_server_src)\OrleansProviders.dll" />
                 <File Id="File_SE_OrleansRuntime.dll" Name="OrleansRuntime.dll" Source="$(var.SDK_binaries_server_src)\OrleansRuntime.dll" />
-                <File Id="File_SE_StartOrleans.cmd" Name="StartOrleans.cmd" Source="$(var.SDK_binaries_server_src)\StartOrleans.cmd" />
+                <File Id="File_SE_Run.cmd" Name="Run.cmd" Source="$(var.SDK_binaries_server_src)\Run.cmd" />
+                <File Id="File_SE_Run.sh" Name="run.sh" Source="$(var.SDK_binaries_server_src)\run.sh" />
                 <File Id="File_SE_CreateTables.sql" Name="CreateTables.sql" Source="$(var.Orleans_src)\OrleansProviders\SQLServer\CreateTables.sql" />
                 <File Id="File_SE_Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.SDK_binaries_server_src)\Newtonsoft.Json.dll" />
                 <RemoveFolder Id='SDK_Binaries_OrleansServer' On='uninstall'/>
@@ -158,7 +159,8 @@
               <File Id="File_LS_OrleansHost.exe" Name="OrleansHost.exe" Source="$(var.SDK_binaries_server_src)\OrleansHost.exe" />
               <File Id="File_LS_OrleansHost.exe.config" Name="OrleansHost.exe.config" Source="$(var.SDK_binaries_server_src)\OrleansHost.exe.config" />
               <File Id="File_LS_OrleansRuntime.dll" Name="OrleansRuntime.dll" Source="$(var.SDK_binaries_server_src)\OrleansRuntime.dll" />
-              <File Id="File_LS_StartOrleans.cmd" Name="StartOrleans.cmd" Source="$(var.SDK_binaries_server_src)\StartOrleans.cmd" />
+              <File Id="File_LS_Run.cmd" Name="Run.cmd" Source="$(var.SDK_binaries_server_src)\Run.cmd" />
+              <File Id="File_LS_Run.sh" Name="run.sh" Source="$(var.SDK_binaries_server_src)\run.sh" />
               <File Id="File_LS_Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.SDK_binaries_server_src)\Newtonsoft.Json.dll" />
               <RemoveFolder Id='SDK_LocalSilo' On='uninstall'/>
               <RegistryValue Root='HKLM' Key='Software\Microsoft\OrleansSDK\Preview\v$(var.ProductVersion)\SDK' Type='string' Value='' KeyPath='yes' />
