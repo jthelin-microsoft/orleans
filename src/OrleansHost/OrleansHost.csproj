@@ -76,8 +76,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="OrleansLocal.xml" />
-    <Content Include="StartOrleans.cmd">
+    <Content Include="..\SDK\OrleansConfiguration.xml">
+      <Link>OrleansConfiguration.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Run.cmd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -87,6 +90,9 @@
     </None>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="run.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
