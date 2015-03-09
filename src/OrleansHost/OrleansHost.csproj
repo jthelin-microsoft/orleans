@@ -77,8 +77,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="OrleansLocal.xml" />
-    <Content Include="StartOrleans.cmd">
+    <Content Include="..\SDK\OrleansConfiguration.xml">
+      <Link>OrleansConfiguration.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Run.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -88,6 +91,9 @@
     </None>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="run.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
