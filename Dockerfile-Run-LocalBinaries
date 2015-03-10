@@ -1,0 +1,17 @@
+FROM mono:latest
+MAINTAINER Jorgen Thelin <jthelin@microsoft.com>
+
+ENV REFRESHED_AT 2015-03-07
+
+RUN apt-get -yqq update && \
+    apt-get -yqq install curl unzip
+
+RUN mkdir -p /usr/local/orleans/Binaries
+COPY ./Binaries/Release /usr/local/orleans/Binaries
+
+WORKDIR /usr/local/orleans/Binaries
+
+EXPOSE 30000
+EXPOSE 11111
+
+CMD ["mono","OrleansHost.exe","MonoSilo"]
