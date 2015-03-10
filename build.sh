@@ -1,11 +1,10 @@
-pushd `dirname $0` > /dev/null
-ScriptDir=`pwd`
-popd > /dev/null
+#!/bin/bash
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 export CONFIGURATION=Release
-export OutDir=$ScriptDir/Binaries/$CONFIGURATION
+export OutDir=$DIR/Binaries/$CONFIGURATION
 
-SrcDir=$ScriptDir/src
+SrcDir=$DIR/src
 
 NuGetDir=$SrcDir/.nuget
 NuGetExe=$NuGetDir/NuGet.exe
