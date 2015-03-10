@@ -1,0 +1,20 @@
+FROM mono:latest
+MAINTAINER Jorgen Thelin <jthelin@microsoft.com>
+
+ENV REFRESHED_AT 2015-03-07
+
+RUN apt-get -yqq update && \
+    apt-get -yqq install curl unzip
+
+RUN mkdir -p /usr/local/orleans
+
+RUN cd /usr/local/orleans && \
+    curl https://orleansdrops.blob.core.windows.net/public/OrleansSDK-1.0.3-drop.zip > ./Orleans-SDK-1.0.3.zip && \
+    unzip Orleans-SDK-1.0.3.zip
+
+WORKDIR /usr/local/orleans/SDK/LocalSilo
+
+EXPOSE 30000
+EXPOSE 11111
+
+CMD ["mono","OrleansHost.exe","MonoSilo"]

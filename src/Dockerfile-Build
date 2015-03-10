@@ -1,0 +1,9 @@
+FROM mono:onbuild
+MAINTAINER Jorgen Thelin <jthelin@microsoft.com>
+
+ENV REFRESHED_AT 2015-03-07
+
+EXPOSE 30000
+EXPOSE 11111
+
+CMD [ "mono","OrleansHost.exe","MonoSilo-Build" ]
