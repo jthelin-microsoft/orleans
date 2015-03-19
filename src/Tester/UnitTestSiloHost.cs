@@ -31,7 +31,6 @@ using System.Runtime.Remoting;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Orleans;
 using Orleans.Runtime;
 using Orleans.Runtime.Configuration;
@@ -43,10 +42,10 @@ namespace UnitTests.Tester
     /// Runs a Primary & Secondary silo in seperate app domains, and client in main app domain.
     /// Additional silos can also be started in-process if required for particular test cases.
     /// </summary>
-    [DeploymentItem("OrleansConfigurationForUnitTests.xml")]
-    [DeploymentItem("ClientConfigurationForUnitTests.xml")]
-    [DeploymentItem("TestGrainInterfaces.dll")]
-    [DeploymentItem("TestGrains.dll")]
+    //[DeploymentItem("OrleansConfigurationForUnitTests.xml")]
+    //[DeploymentItem("ClientConfigurationForUnitTests.xml")]
+    //[DeploymentItem("TestGrainInterfaces.dll")]
+    //[DeploymentItem("TestGrains.dll")]
     public class UnitTestSiloHost
     {
         protected static AppDomain SharedMemoryDomain;

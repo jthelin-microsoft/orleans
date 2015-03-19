@@ -25,16 +25,19 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using NUnit.Framework;
+
 using Orleans.Providers.Streams.AzureQueue;
+
 using UnitTests.SampleStreaming;
 using UnitTests.Tester;
 
 namespace Tester.StreamingTests
 {
-    [DeploymentItem("OrleansConfigurationForUnitTests.xml")]
-    [DeploymentItem("OrleansProviders.dll")]
-    [TestClass]
+    //[DeploymentItem("OrleansConfigurationForUnitTests.xml")]
+    //[DeploymentItem("OrleansProviders.dll")]
+    [TestFixture]
     public class SampleStreamingTests : UnitTestSiloHost
     {
         private const string SMS_STREAM_PROVIDER_NAME = "SMSProvider";
@@ -55,13 +58,13 @@ namespace Tester.StreamingTests
         }
 
         // Use ClassCleanup to run code after all tests in a class have run
-        [ClassCleanup]
+        [TestFixtureTearDown]
         public static void MyClassCleanup()
         {
             StopAllSilos();
         }
 
-        [TestCleanup]
+        [TearDown]
         public void TestCleanup()
         {
             if (streamProvider != null && streamProvider.Equals(AZURE_QUEUE_STREAM_PROVIDER_NAME))
@@ -71,7 +74,7 @@ namespace Tester.StreamingTests
             }
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly"), TestCategory("Streaming")]
+        [Test, Category("BVT"), Category("Nightly"), Category("Streaming")]
         public async Task SampleStreamingTests_1()
         {
             logger.Info("************************ SampleStreamingTests_1 *********************************");
@@ -80,7 +83,7 @@ namespace Tester.StreamingTests
             await StreamingTests_Consumer_Producer(streamId, streamProvider);
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Streaming")]
+        [Test, Category("Nightly"), Category("Streaming")]
         public async Task SampleStreamingTests_2()
         {
             logger.Info("************************ SampleStreamingTests_2 *********************************");
@@ -89,7 +92,7 @@ namespace Tester.StreamingTests
             await StreamingTests_Producer_Consumer(streamId, streamProvider);
         }
 
-        [TestMethod, TestCategory( "Nightly" ), TestCategory( "Streaming" )]
+        [Test, Category( "Nightly" ), Category( "Streaming" )]
         public async Task SampleStreamingTests_3()
         {
             logger.Info("************************ SampleStreamingTests_3 *********************************" );
@@ -104,7 +107,7 @@ namespace Tester.StreamingTests
         // 2) Set the dataConnectionString variable in the TestCleanup method to this value as well.
         // 3) Uncomment and run the below 2 tests.
 
-        //[TestMethod, TestCategory("Nightly"), TestCategory("Streaming")]
+        //[Test, Category("Nightly"), Category("Streaming")]
         //public async Task SampleStreamingTests_3()
         //{
         //    logger.Info("************************ SampleStreamingTests_3 *********************************");
@@ -113,7 +116,7 @@ namespace Tester.StreamingTests
         //    await StreamingTests_Consumer_Producer(streamId, streamProvider);
         //}
 
-        //[TestMethod, TestCategory("Nightly"), TestCategory("Streaming")]
+        //[Test, Category("Nightly"), Category("Streaming")]
         //public async Task SampleStreamingTests_4()
         //{
         //    logger.Info("************************ SampleStreamingTests_4 *********************************");
