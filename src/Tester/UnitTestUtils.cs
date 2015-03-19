@@ -25,8 +25,8 @@ using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Orleans;
+﻿﻿using NUnit.Framework;
+﻿﻿using Orleans;
 
 namespace UnitTests.Tester
 {
