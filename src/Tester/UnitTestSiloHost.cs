@@ -21,7 +21,7 @@ OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHE
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-﻿﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -29,12 +29,11 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.Remoting;
 using System.Threading;
-﻿﻿using System.Threading.Tasks;
-﻿﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading.Tasks;
 using Orleans;
-﻿﻿using Orleans.Runtime;
+using Orleans.Runtime;
 using Orleans.Runtime.Configuration;
-﻿﻿using UnitTests.Tester.Extensions;
+using UnitTests.Tester.Extensions;
 
 namespace UnitTests.Tester
 {
@@ -43,11 +42,10 @@ namespace UnitTests.Tester
     /// Runs a Primary & Secondary silo in seperate app domains, and client in main app domain.
     /// Additional silos can also be started in-process if required for particular test cases.
     /// </summary>
-    [DeploymentItem("OrleansConfigurationForStreamingUnitTests.xml")]
-    [DeploymentItem("OrleansConfigurationForUnitTests.xml")]
-    [DeploymentItem("ClientConfigurationForUnitTests.xml")]
-    [DeploymentItem("TestGrainInterfaces.dll")]
-    [DeploymentItem("TestGrains.dll")]
+    //[DeploymentItem("OrleansConfigurationForUnitTests.xml")]
+    //[DeploymentItem("ClientConfigurationForUnitTests.xml")]
+    //[DeploymentItem("TestGrainInterfaces.dll")]
+    //[DeploymentItem("TestGrains.dll")]
     public class UnitTestSiloHost
     {
         protected static AppDomain SharedMemoryDomain;

@@ -24,8 +24,8 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Orleans;
+﻿using NUnit.Framework;
+﻿using Orleans;
 using UnitTests.GrainInterfaces;
 using UnitTests.Tester;
 
@@ -34,7 +34,7 @@ namespace UnitTests.General
     /// <summary>
     /// Summary description for SimpleGrain
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class SimpleGrainTests : UnitTestSiloHost
     {
         private const string SimpleGrainNamePrefix = "UnitTests.Grains.SimpleG";
@@ -59,20 +59,20 @@ namespace UnitTests.General
             return random.Next();
         }
 
-        [ClassCleanup]
+        [TestFixtureTearDown]
         public static void MyClassCleanup()
         {
             StopAllSilos();
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task SimpleGrainGetGrain()
         {
             ISimpleGrain grain = GetSimpleGrain();
             int ignored = await grain.GetAxB();
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public void SimpleGrainControlFlow()
         {
             ISimpleGrain grain = GetSimpleGrain();
@@ -87,7 +87,7 @@ namespace UnitTests.General
             Assert.AreEqual(6, intPromise.Result);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task SimpleGrainDataFlow()
         {
             ISimpleGrain grain = GetSimpleGrain();
