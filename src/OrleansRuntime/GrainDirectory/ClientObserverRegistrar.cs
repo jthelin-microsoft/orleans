@@ -40,7 +40,11 @@ namespace Orleans.Runtime
         private static readonly TimeSpan EXP_BACKOFF_STEP = TimeSpan.FromSeconds(1);
 
         private readonly ILocalGrainDirectory grainDirectory;
+        // ReSharper disable UnaccessedField.Local
+        #pragma warning disable 414
         private readonly ISiloMessageCenter messageCenter;
+        #pragma warning restore 414
+        // ReSharper restore UnaccessedField.Local
         private readonly SiloAddress myAddress;
         private readonly OrleansTaskScheduler scheduler;
         private readonly ClusterConfiguration orleansConfig;
