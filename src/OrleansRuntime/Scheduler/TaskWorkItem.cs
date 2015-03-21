@@ -30,7 +30,9 @@ namespace Orleans.Runtime.Scheduler
     {
         private readonly Task task;
         private readonly ITaskScheduler scheduler;
+#if DEBUG
         private static readonly TraceLogger logger = TraceLogger.GetLogger("Scheduler.TaskWorkItem", TraceLogger.LoggerType.Runtime);
+#endif
 
         public override string Name { get { return String.Format("TaskRunner for task {0}", task.Id); } }
 

@@ -39,8 +39,10 @@ namespace Orleans.Runtime.Messaging
         private Action<Message> rerouteHandler;
 
         // ReSharper disable UnaccessedField.Local
+        #pragma warning disable 414
         private IntValueStatistic sendQueueLengthCounter;
         private IntValueStatistic receiveQueueLengthCounter;
+        #pragma warning restore 414
         // ReSharper restore UnaccessedField.Local
         
         internal IOutboundMessageQueue OutboundQueue { get; set; }
