@@ -389,8 +389,12 @@ namespace Orleans.Runtime.Scheduler
                     }
                     count++;
                 } 
+                // TODO: Should really investigate this compile warning flagged by Mono, rather then just ignoring it.
+                // Warning CS0429 -- Unreachable expression code detected
+                #pragma warning disable 429
                 while (((MaxWorkItemsPerTurn <= 0) || (count <= MaxWorkItemsPerTurn)) &&
                     ((ActivationSchedulingQuantum <= TimeSpan.Zero) || (stopwatch.Elapsed < ActivationSchedulingQuantum)));
+                #pragma warning restore 429
                 stopwatch.Stop();
             }
             catch (Exception ex)
