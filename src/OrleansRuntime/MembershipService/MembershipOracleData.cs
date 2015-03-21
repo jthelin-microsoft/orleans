@@ -39,8 +39,12 @@ namespace Orleans.Runtime.MembershipService
         private readonly List<ISiloStatusListener> statusListeners;
         private readonly TraceLogger logger;
         
+        // ReSharper disable UnaccessedField.Local
+        #pragma warning disable 414
         private IntValueStatistic clusterSizeStatistic;
         private StringValueStatistic clusterStatistic;
+        #pragma warning restore 414
+        // ReSharper restore UnaccessedField.Local
 
         internal readonly DateTime SiloStartTime;
         internal readonly SiloAddress MyAddress;
