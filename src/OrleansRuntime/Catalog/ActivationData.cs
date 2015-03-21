@@ -834,6 +834,8 @@ namespace Orleans.Runtime
 
     internal static class StreamResourceTestControl
     {
+        #pragma warning disable 649
         internal static bool TestOnlySuppressStreamCleanupOnDeactivate;
+        #pragma warning restore 649
     }
 }

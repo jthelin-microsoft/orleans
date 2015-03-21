@@ -211,8 +211,10 @@ namespace Orleans.Runtime.Scheduler
                     return;
                 }
 
-                long thisSequenceNumber = totalItemsEnQueued++;
                 int count = WorkItemCount;
+#if DEBUG
+                long thisSequenceNumber = totalItemsEnQueued++;
+#endif
 #if TRACK_DETAILED_STATS
                 if (StatisticsCollector.CollectShedulerQueuesStats)
                     queueTracking.OnEnQueueRequest(1, count);

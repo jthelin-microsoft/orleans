@@ -77,11 +77,15 @@ namespace Orleans.Runtime
         private IDisposable gcTimer;
         private readonly GlobalConfiguration config;
         private readonly string localSiloName;
+        // ReSharper disable UnaccessedField.Local
+        #pragma warning disable 414
         private readonly CounterStatistic activationsCreated;
         private readonly CounterStatistic activationsDestroyed;
         private readonly CounterStatistic activationsFailedToActivate;
         private readonly IntValueStatistic inProcessRequests;
         private readonly CounterStatistic collectionCounter;
+        #pragma warning restore 414
+        // ReSharper restore UnaccessedField.Local
 
         internal Catalog(
             GrainId grainId, 
