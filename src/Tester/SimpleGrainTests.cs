@@ -60,7 +60,7 @@ namespace UnitTests.General
         }
 
         [TestFixtureTearDown]
-        public static void MyClassCleanup()
+        public void MyClassCleanup()
         {
             StopAllSilos();
         }

@@ -56,7 +56,7 @@ namespace Tester.StreamingTests
 
         // Use ClassCleanup to run code after all tests in a class have run
         [TestFixtureTearDown]
-        public static void MyClassCleanup()
+        public void MyClassCleanup()
         {
             StopAllSilos();
         }
