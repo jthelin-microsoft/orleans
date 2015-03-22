@@ -22,23 +22,17 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 */
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Shared.Protocol;
-using Microsoft.WindowsAzure.Storage.Table;
-using Orleans;
+using NUnit.Framework;
 using Orleans.AzureUtils;
 using UnitTests.Tester;
 
 namespace UnitTests.StorageTests
 {
-    [TestClass]
+    [TestFixture]
     public class AzureTableDataManagerTests
     {
         private string PartitionKey;
@@ -50,7 +44,7 @@ namespace UnitTests.StorageTests
             return new UnitTestAzureTableData("JustData", PartitionKey, "RK-" + Guid.NewGuid());
         }
 
-        [TestInitialize]
+        [SetUp]
         public void TestInitialize()
         {
             UnitTestUtils.ConfigureThreadPoolSettingsForStorageTests();
@@ -59,7 +53,7 @@ namespace UnitTests.StorageTests
             PartitionKey = "PK-AzureTableDataManagerTests-" + Guid.NewGuid();
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task AzureTableDataManager_CreateTableEntryAsync()
         {
             var data = GenerateNewData();
@@ -84,7 +78,7 @@ namespace UnitTests.StorageTests
             Assert.AreEqual(data.StringData, tuple.Item1.StringData);
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task AzureTableDataManager_UpsertTableEntryAsync()
         {
             var data = GenerateNewData();
@@ -99,7 +93,7 @@ namespace UnitTests.StorageTests
             Assert.AreEqual(data2.StringData, tuple.Item1.StringData);
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task AzureTableDataManager_UpdateTableEntryAsync()
         {
             var data = GenerateNewData();
@@ -150,7 +144,7 @@ namespace UnitTests.StorageTests
             }
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task AzureTableDataManager_DeleteTableAsync()
         {
             var data = GenerateNewData();
@@ -191,7 +185,7 @@ namespace UnitTests.StorageTests
             Assert.IsNull(tuple);
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task AzureTableDataManager_MergeTableAsync()
         {
             var data = GenerateNewData();
@@ -234,7 +228,7 @@ namespace UnitTests.StorageTests
             Assert.AreEqual("NewData", tuple.Item1.StringData);
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task AzureTableDataManager_ReadSingleTableEntryAsync()
         {
             var data = GenerateNewData();
@@ -242,7 +236,7 @@ namespace UnitTests.StorageTests
             Assert.IsNull(tuple);
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task AzureTableDataManager_InsertTwoTableEntriesConditionallyAsync()
         {
             var data1 = GenerateNewData();
@@ -294,7 +288,7 @@ namespace UnitTests.StorageTests
             };
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task AzureTableDataManager_UpdateTwoTableEntriesConditionallyAsync()
         {
             var data1 = GenerateNewData();

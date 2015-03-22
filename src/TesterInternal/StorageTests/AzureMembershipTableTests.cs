@@ -22,11 +22,8 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 */
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans;
 using Orleans.Runtime;
 using Orleans.Runtime.Configuration;
@@ -38,7 +35,7 @@ namespace UnitTests.StorageTests
     /// <summary>
     /// Tests for operation of Orleans SiloInstanceManager using AzureStore - Requires access to external Azure storage
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class AzureMembershipTableTests
     {
         public TestContext TestContext { get; set; }
@@ -55,15 +52,13 @@ namespace UnitTests.StorageTests
             logger = TraceLogger.GetLogger("AzureMembershipTableTests", TraceLogger.LoggerType.Application);
         }
 
-        // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
+        [TestFixtureSetUp]
+        public void ClassInitialize()
         {
             TraceLogger.Initialize(new NodeConfiguration());
         }
 
-        // Use TestInitialize to run code before running each test 
-        [TestInitialize]
+        [SetUp]
         public void TestInitialize()
         {
             deploymentId = "test-" + Guid.NewGuid();
@@ -82,8 +77,7 @@ namespace UnitTests.StorageTests
                 .WaitForResultWithThrow(timeout);
         }
 
-        // Use TestCleanup to run code after each test has run
-        [TestCleanup]
+        [TearDown]
         public void TestCleanup()
         {
             if (membership != null && SiloInstanceTableTestConstants.DeleteEntriesAfterTest)
@@ -93,7 +87,7 @@ namespace UnitTests.StorageTests
             }
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task AzureMembership_ReadAll_0()
         {
             MembershipTableData data = await membership.ReadAll();
@@ -109,7 +103,7 @@ namespace UnitTests.StorageTests
             Assert.AreEqual(0, ver, "Initial tabel version should be zero");
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task AzureMembership_ReadRow_0()
         {
             MembershipTableData data = await membership.ReadRow(siloAddress);
@@ -127,7 +121,7 @@ namespace UnitTests.StorageTests
             Assert.AreEqual(0, ver, "Initial tabel version should be zero");
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task AzureMembership_ReadRow_1()
         {
             MembershipTableData data = await membership.ReadAll();
@@ -167,7 +161,7 @@ namespace UnitTests.StorageTests
             Assert.IsNotNull(MembershipEntry, "MembershipEntry should not be null");
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task AzureMembership_ReadAll_1()
         {
             MembershipTableData data = await membership.ReadAll();

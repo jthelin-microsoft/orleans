@@ -26,14 +26,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Queue;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans.Runtime;
 using Orleans.Runtime.Configuration;
 using Orleans.AzureUtils;
 
 namespace UnitTests.StorageTests
 {
-    [TestClass]
+    [TestFixture]
     public class AzureQueueDataManagerTests
     {
         private readonly TraceLogger logger;
@@ -48,7 +48,7 @@ namespace UnitTests.StorageTests
             logger = TraceLogger.GetLogger("AzureQueueDataManagerTests", TraceLogger.LoggerType.Application);
         }
 
-        [TestCleanup]
+        [TearDown]
         public void TestCleanup()
         {
             AzureQueueDataManager manager = GetTableManager(queueName).Result;
@@ -63,7 +63,7 @@ namespace UnitTests.StorageTests
             return manager;
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage"), TestCategory("AzureQueue")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage"), Category("AzureQueue")]
         public async Task AQ_Standalone_1()
         {
             queueName = "Test-1-".ToLower() + Guid.NewGuid();
@@ -97,7 +97,7 @@ namespace UnitTests.StorageTests
             Assert.AreEqual(0, await manager.GetApproximateMessageCount());
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage"), TestCategory("AzureQueue")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage"), Category("AzureQueue")]
         public async Task AQ_Standalone_2()
         {
             queueName = "Test-2-".ToLower() + Guid.NewGuid();
@@ -129,7 +129,7 @@ namespace UnitTests.StorageTests
         }
 
 #if DEBUG || REVISIT
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage"), TestCategory("AzureQueue")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage"), Category("AzureQueue")]
         public async Task AQ_Standalone_3_CreateDelete()
         {
             queueName = "Test-3-".ToLower() + Guid.NewGuid();
@@ -148,7 +148,7 @@ namespace UnitTests.StorageTests
         }
 #endif
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage"), TestCategory("AzureQueue")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage"), Category("AzureQueue")]
         public async Task AQ_Standalone_4_Init_MultipleThreads()
         {
             queueName = "Test-4-".ToLower() + Guid.NewGuid();
