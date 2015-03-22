@@ -27,20 +27,20 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans;
 using Orleans.AzureUtils;
 using UnitTests.Tester;
 
 namespace UnitTests.StorageTests
 {
-    [TestClass]
+    [TestFixture]
     public class AzureTableDataManagerStressTests
     {
         private string PartitionKey;
         private UnitTestAzureTableDataManager manager;
 
-        [TestInitialize]
+        [SetUp]
         public void TestInitialize()
         {
             UnitTestUtils.ConfigureThreadPoolSettingsForStorageTests();
@@ -51,7 +51,7 @@ namespace UnitTests.StorageTests
             PartitionKey = "AzureTableDataManagerStressTests-" + Guid.NewGuid();
         }
 
-        [TestMethod, TestCategory("Azure"), TestCategory("Storage"), TestCategory("Stress")]
+        [Test, Category("Azure"), Category("Storage"), Category("Stress")]
         public void AzureTableDataManagerStressTests_WriteAlot_SinglePartition()
         {
             const string testName = "AzureTableDataManagerStressTests_WriteAlot_SinglePartition";
@@ -63,7 +63,7 @@ namespace UnitTests.StorageTests
             WriteAlot_Async(testName, numPartitions, iterations, batchSize);
         }
 
-        [TestMethod, TestCategory("Azure"), TestCategory("Storage"), TestCategory("Stress")]
+        [Test, Category("Azure"), Category("Storage"), Category("Stress")]
         public void AzureTableDataManagerStressTests_WriteAlot_MultiPartition()
         {
             const string testName = "AzureTableDataManagerStressTests_WriteAlot_MultiPartition";
@@ -75,7 +75,7 @@ namespace UnitTests.StorageTests
             WriteAlot_Async(testName, numPartitions, iterations, batchSize);
         }
 
-        [TestMethod, TestCategory("Azure"), TestCategory("Storage"), TestCategory("Stress")]
+        [Test, Category("Azure"), Category("Storage"), Category("Stress")]
         public void AzureTableDataManagerStressTests_ReadAll_SinglePartition()
         {
             const string testName = "AzureTableDataManagerStressTests_ReadAll";

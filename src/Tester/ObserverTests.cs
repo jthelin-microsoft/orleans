@@ -53,7 +53,7 @@ namespace UnitTests.General
             : base() { }
 
         [TestFixtureTearDown]
-        public static void MyClassCleanup()
+        public void MyClassCleanup()
         {
             StopAllSilos();
         }
@@ -164,7 +164,7 @@ namespace UnitTests.General
             {
                 Exception baseException = exc.GetBaseException();
                 Console.WriteLine("Received exception: {0}", baseException);
-                Assert.IsInstanceOfType(typeof(OrleansException), baseException);
+                Assert.IsInstanceOf<OrleansException>(baseException);
                 if (!baseException.Message.StartsWith("Cannot subscribe already subscribed observer"))
                 {
                     Assert.Fail("Unexpected exception message: " + baseException);
