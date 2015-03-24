@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans.Streams;
 using TestGrainInterfaces;
 using UnitTests.SampleStreaming;

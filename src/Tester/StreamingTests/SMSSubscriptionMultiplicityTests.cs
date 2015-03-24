@@ -24,14 +24,14 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using UnitTests.Tester;
 
 namespace Tester.StreamingTests
 {
-    [DeploymentItem("OrleansConfigurationForUnitTests.xml")]
-    [DeploymentItem("OrleansProviders.dll")]
-    [TestClass]
+    //[DeploymentItem("OrleansConfigurationForUnitTests.xml")]
+    //[DeploymentItem("OrleansProviders.dll")]
+    [TestFixture]
     public class SMSSubscriptionMultiplicityTests : UnitTestSiloHost
     {
         private const string SMSStreamProviderName = "SMSProvider";
@@ -48,35 +48,34 @@ namespace Tester.StreamingTests
             runner = new SubscriptionMultiplicityTestRunner(SMSStreamProviderName);
         }
 
-        // Use ClassCleanup to run code after all tests in a class have run
-        [ClassCleanup]
+        [TestFixtureTearDown]
         public static void MyClassCleanup()
         {
             StopAllSilos();
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly"), TestCategory("Streaming")]
+        [Test, Category("BVT"), Category("Nightly"), Category("Streaming")]
         public async Task SMSMultipleSubscriptionTest()
         {
             logger.Info("************************ SMSMultipleSubscriptionTest *********************************");
             await runner.MultipleSubscriptionTest(Guid.NewGuid(), StreamNamespace);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly"), TestCategory("Streaming")]
+        [Test, Category("BVT"), Category("Nightly"), Category("Streaming")]
         public async Task SMSAddAndRemoveSubscriptionTest()
         {
             logger.Info("************************ SMSAddAndRemoveSubscriptionTest *********************************");
             await runner.AddAndRemoveSubscriptionTest(Guid.NewGuid(), StreamNamespace);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly"), TestCategory("Streaming")]
+        [Test, Category("BVT"), Category("Nightly"), Category("Streaming")]
         public async Task SMSResubscriptionTest()
         {
             logger.Info("************************ SMSResubscriptionTest *********************************");
             await runner.ResubscriptionTest(Guid.NewGuid(), StreamNamespace);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly"), TestCategory("Streaming")]
+        [Test, Category("BVT"), Category("Nightly"), Category("Streaming")]
         public async Task SMSResubscriptionAfterDeactivationTest()
         {
             logger.Info("************************ ResubscriptionAfterDeactivationTest *********************************");
