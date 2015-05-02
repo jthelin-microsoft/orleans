@@ -24,7 +24,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 using System;
 using System.Diagnostics;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans.Runtime.Configuration;
 
 namespace UnitTests.Tester
@@ -94,7 +94,8 @@ namespace UnitTests.Tester
         public static string GetSqlConnectionString(TestContext context)
         {
             string dbFileName = @"TestDb.mdf";
-            string dbDirPath = context.DeploymentDirectory;
+            //string dbDirPath = context.DeploymentDirectory;
+            string dbDirPath = "."; // TEMP HACK
             return GetSqlConnectionString(new DirectoryInfo(dbDirPath), dbFileName);
         }
         public static string GetSqlConnectionString(DirectoryInfo dbDir, string dbFileName)
