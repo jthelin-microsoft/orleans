@@ -24,7 +24,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans;
 using UnitTests.GrainInterfaces;
 using UnitTests.Tester;
@@ -34,7 +34,7 @@ namespace UnitTests.General
     /// <summary>
     /// Unit tests for grains implementing generic interfaces
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class GenericGrainTests : UnitTestSiloHost
     {
 
@@ -58,7 +58,7 @@ namespace UnitTests.General
             return random.Next();
         }
 
-        [ClassCleanup]
+        [TestFixtureTearDown]
         public static void MyClassCleanup()
         {
             StopAllSilos();
@@ -66,7 +66,7 @@ namespace UnitTests.General
 
         /// Can instantiate multiple concrete grain types that implement
         /// different specializations of the same generic interface
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task GenericGrainTests_ConcreteGrainWithGenericInterfaceGetGrain()
         {
 
@@ -88,7 +88,7 @@ namespace UnitTests.General
         }
 
         /// Multiple GetGrain requests with the same id return the same concrete grain 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task GenericGrainTests_ConcreteGrainWithGenericInterfaceMultiplicity()
         {
             var grainId = GetRandomGrainId();
@@ -103,7 +103,7 @@ namespace UnitTests.General
         }
 
         /// Can instantiate generic grain specializations
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task GenericGrainTests_SimpleGenericGrainGetGrain()
         {
 
@@ -130,7 +130,7 @@ namespace UnitTests.General
         }
 
         /// Multiple GetGrain requests with the same id return the same generic grain specialization
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task GenericGrainTests_SimpleGenericGrainMultiplicity()
         {
             var grainId = GetRandomGrainId();
@@ -147,7 +147,7 @@ namespace UnitTests.General
 
         /// If both a concrete implementation and a generic implementation of a 
         /// generic interface exist, prefer the concrete implementation.
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task GenericGrainTests_PreferConcreteGrainImplementationOfGenericInterface()
         {
             var grainOfDouble1 = GetGrain<ISimpleGenericGrain<double>>();
@@ -168,7 +168,7 @@ namespace UnitTests.General
         }
 
         /// Multiple GetGrain requests with the same id return the same concrete grain implementation
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task GenericGrainTests_PreferConcreteGrainImplementationOfGenericInterfaceMultiplicity()
         {
             var grainId = GetRandomGrainId();
@@ -186,7 +186,7 @@ namespace UnitTests.General
         }
 
         /// Can instantiate concrete grains that implement multiple generic interfaces
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task GenericGrainTests_ConcreteGrainWithMultipleGenericInterfacesGetGrain()
         {
             var grain1 = GetGrain<ISimpleGenericGrain<int>>();
@@ -207,7 +207,7 @@ namespace UnitTests.General
         }
 
         /// Multiple GetGrain requests with the same id and interface return the same concrete grain implementation
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task GenericGrainTests_ConcreteGrainWithMultipleGenericInterfacesMultiplicity1()
         {
             var grainId = GetRandomGrainId();
@@ -227,7 +227,7 @@ namespace UnitTests.General
         }
 
         /// Multiple GetGrain requests with the same id and different interfaces return the same concrete grain implementation
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task GenericGrainTests_ConcreteGrainWithMultipleGenericInterfacesMultiplicity2()
         {
             var grainId = GetRandomGrainId();
