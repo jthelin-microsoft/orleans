@@ -2,7 +2,9 @@
 <OrleansConfiguration xmlns="urn:orleans">
   <Globals>
     <StorageProviders>
+<!-- TEMP HACK - NUnit is not able to find OrleansProviders.dll to load this MemoryStorage provider.
       <Provider Type="Orleans.Storage.MemoryStorage" Name="PubSubStore" NumStorageGrains="1"/>
+-->
       <!--<Provider Type="Orleans.Storage.MemoryStorage" Name="MemoryStore" />-->
       <!--<Provider Type="Orleans.Storage.AzureTableStorage" Name="AzureStore" />-->
     </StorageProviders>

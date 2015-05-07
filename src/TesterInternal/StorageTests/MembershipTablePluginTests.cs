@@ -24,7 +24,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans;
 using Orleans.Runtime;
 using Orleans.Runtime.Configuration;
@@ -33,16 +33,16 @@ using UnitTests.Tester;
 
 namespace UnitTests.LivenessTests
 {
-    [TestClass]
-    [DeploymentItem("OrleansConfigurationForUnitTests.xml")]
-    [DeploymentItem(@"Data\TestDb.mdf")]
+    [TestFixture]
+    //[DeploymentItem("OrleansConfigurationForUnitTests.xml")]
+    //[DeploymentItem(@"Data\TestDb.mdf")]
     public class MembershipTablePluginTests
     {
         public TestContext TestContext { get; set; }
         private static int counter;
         private static string hostName;
 
-        [ClassInitialize]
+        [TestFixtureSetUp]
         public static void ClassInitialize(TestContext testContext)
         {
             hostName = Dns.GetHostName();
@@ -57,50 +57,50 @@ namespace UnitTests.LivenessTests
             TraceLogger.AddTraceLevelOverride("Storage", Logger.Severity.Verbose3);
         }
 
-        [TestCleanup]
+        [TestFixtureTearDown]
         public void TestCleanup()
         {
-            Console.WriteLine("Test {0} completed - Outcome = {1}", TestContext.TestName, TestContext.CurrentTestOutcome);
+            Console.WriteLine("Test {0} completed - Outcome = {1}", TestContext.CurrentContext.Test.Name, TestContext.Result.State);
         }
 
         // Test methods 
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Liveness"), TestCategory("Azure")]
+        [Test, Category("Nightly"), Category("Liveness"), Category("Azure")]
         public async Task MT_Init_Azure()
         {
             var membership = await GetMemebershipTable_Azure();
             Assert.IsNotNull(membership, "Membership Table handler created");
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Liveness"), TestCategory("Azure")]
+        [Test, Category("Nightly"), Category("Liveness"), Category("Azure")]
         public async Task MT_ReadAll_Azure()
         {
             var membership = await GetMemebershipTable_Azure();
             await MembershipTable_ReadAll(membership);
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Liveness"), TestCategory("Azure")]
+        [Test, Category("Nightly"), Category("Liveness"), Category("Azure")]
         public async Task MT_InsertRow_Azure()
         {
             var membership = await GetMemebershipTable_Azure(); 
             await MembershipTable_InsertRow(membership);
         }
         
-        [TestMethod, TestCategory("Liveness"), TestCategory("SqlServer")]
+        [Test, Category("Liveness"), Category("SqlServer")]
         public async Task MT_Init_SqlServer()
         {
             var membership = await GetMemebershipTable_SQL();
             Assert.IsNotNull(membership, "Membership Table handler created");
         }
 
-        [TestMethod, TestCategory("Liveness"), TestCategory("SqlServer")]
+        [Test, Category("Liveness"), Category("SqlServer")]
         public async Task MT_ReadAll_SqlServer()
         {
             var membership = await GetMemebershipTable_SQL();
             await MembershipTable_ReadAll(membership);
         }
 
-        [TestMethod,TestCategory("Liveness"), TestCategory("SqlServer")]
+        [Test,Category("Liveness"), Category("SqlServer")]
         public async Task MT_InsertRow_SqlServer()
         {
             var membership = await GetMemebershipTable_SQL();

@@ -23,20 +23,15 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 
 using System;
 using System.Net;
-using System.Data.Services.Client;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.WindowsAzure.Storage.Shared.Protocol;
-using Microsoft.WindowsAzure.Storage.Table.Protocol;
-using Orleans.Runtime;
+using NUnit.Framework;
 using Orleans.AzureUtils;
-using Microsoft.WindowsAzure.Storage;
 
 namespace UnitTests.StorageTests
 {
-    [TestClass]
+    [TestFixture]
     public class AzureTableErrorCodeTests
     {
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public void AzureTableErrorCode_IsRetriableHttpError()
         {
             Assert.IsTrue(AzureStorageUtils.IsRetriableHttpError((HttpStatusCode) 503, null));
@@ -51,7 +46,7 @@ namespace UnitTests.StorageTests
             Assert.IsFalse(AzureStorageUtils.IsRetriableHttpError((HttpStatusCode) 200, null));
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public void AzureTableErrorCode_IsContentionError()
         {
             Assert.IsTrue(AzureStorageUtils.IsContentionError(HttpStatusCode.PreconditionFailed));
@@ -68,7 +63,7 @@ namespace UnitTests.StorageTests
             Assert.IsFalse(AzureStorageUtils.IsContentionError((HttpStatusCode) 200));
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         [ExpectedException(typeof (ArgumentException))]
         public void AzureTableErrorCode_BadTableName()
         {

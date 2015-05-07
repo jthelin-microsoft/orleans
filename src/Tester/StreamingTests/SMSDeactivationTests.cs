@@ -24,15 +24,15 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans;
 using UnitTests.Tester;
 
 namespace Tester.StreamingTests
 {
-    [DeploymentItem("OrleansConfigurationForStreamingDeactivationUnitTests.xml")]
-    [DeploymentItem("OrleansProviders.dll")]
-    [TestClass]
+    //[DeploymentItem("OrleansConfigurationForStreamingDeactivationUnitTests.xml")]
+    //[DeploymentItem("OrleansProviders.dll")]
+    [TestFixture]
     public class SMSDeactivationTests : UnitTestSiloHost
     {
         private const string SMSStreamProviderName = "SMSProvider";
@@ -51,13 +51,13 @@ namespace Tester.StreamingTests
         }
 
         // Use ClassCleanup to run code after all tests in a class have run
-        [ClassCleanup]
+        [TestFixtureTearDown]
         public static void MyClassCleanup()
         {
             StopAllSilos();
         }
 
-        [TestMethod, TestCategory("Failures"), TestCategory("Nightly"), TestCategory("Streaming")]
+        [TestCase, Category("Failures"), Category("Nightly"), Category("Streaming")]
         [ExpectedException(typeof(TimeoutException))]
         public async Task SMSDeactivationTest()
         {
@@ -65,7 +65,7 @@ namespace Tester.StreamingTests
             await runner.DeactivationTest(Guid.NewGuid(), StreamNamespace);
         }
 
-        [TestMethod, TestCategory("Failures"), TestCategory("Nightly"), TestCategory("Streaming")]
+        [TestCase, Category("Failures"), Category("Nightly"), Category("Streaming")]
         [ExpectedException(typeof(TimeoutException))]
         public async Task SMSDeactivationTest_ClientConsumer()
         {

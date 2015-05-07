@@ -22,12 +22,11 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 */
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans;
 using Orleans.AzureUtils;
 using Orleans.Runtime;
@@ -50,7 +49,7 @@ namespace UnitTests.StorageTests
     /// <summary>
     /// Tests for operation of Orleans SiloInstanceManager using AzureStore - Requires access to external Azure storage
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class SiloInstanceTableManagerTests
     {
         public TestContext TestContext { get; set; }
@@ -67,15 +66,13 @@ namespace UnitTests.StorageTests
             logger = TraceLogger.GetLogger("SiloInstanceTableManagerTests", TraceLogger.LoggerType.Application);
         }
 
-        // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
+        [TestFixtureSetUp]
+        public void ClassInitialize()
         {
             TraceLogger.Initialize(new NodeConfiguration());
         }
 
-        // Use TestInitialize to run code before running each test 
-        [TestInitialize]
+        [SetUp]
         public void TestInitialize()
         {
             deploymentId = "test-" + Guid.NewGuid();
@@ -89,8 +86,7 @@ namespace UnitTests.StorageTests
                 .WaitForResultWithThrow(SiloInstanceTableTestConstants.Timeout);
         }
 
-        // Use TestCleanup to run code after each test has run
-        [TestCleanup]
+        [TearDown]
         public void TestCleanup()
         {
             if (manager != null && SiloInstanceTableTestConstants.DeleteEntriesAfterTest)
@@ -106,13 +102,13 @@ namespace UnitTests.StorageTests
             }
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public void SiloInstanceTable_Op_RegisterSiloInstance()
         {
             RegisterSiloInstance();
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public void SiloInstanceTable_Op_ActivateSiloInstance()
         {
             RegisterSiloInstance();
@@ -120,7 +116,7 @@ namespace UnitTests.StorageTests
             manager.ActivateSiloInstance(myEntry);
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public void SiloInstanceTable_Op_UnregisterSiloInstance()
         {
             RegisterSiloInstance();
@@ -128,7 +124,7 @@ namespace UnitTests.StorageTests
             manager.UnregisterSiloInstance(myEntry);
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task SiloInstanceTable_Op_CreateSiloEntryConditionally()
         {
             bool didInsert = await manager.TryCreateTableVersionEntryAsync()
@@ -137,7 +133,7 @@ namespace UnitTests.StorageTests
             Assert.IsTrue(didInsert, "Did insert");
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task SiloInstanceTable_Register_CheckData()
         {
             const string testName = "SiloInstanceTable_Register_CheckData";
@@ -158,7 +154,7 @@ namespace UnitTests.StorageTests
             logger.Info("End {0}", testName);
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task SiloInstanceTable_Activate_CheckData()
         {
             RegisterSiloInstance();
@@ -179,7 +175,7 @@ namespace UnitTests.StorageTests
             CheckSiloInstanceTableEntry(myEntry, siloEntry);
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public async Task SiloInstanceTable_Unregister_CheckData()
         {
             RegisterSiloInstance();
@@ -198,7 +194,7 @@ namespace UnitTests.StorageTests
             CheckSiloInstanceTableEntry(myEntry, siloEntry);
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public void SiloInstanceTable_FindAllGatewayProxyEndpoints()
         {
             RegisterSiloInstance();
@@ -216,7 +212,7 @@ namespace UnitTests.StorageTests
             Assert.AreEqual(myEntry.ProxyPort, myGateway.Port.ToString(CultureInfo.InvariantCulture), "Gateway port");
         }
 
-        [TestMethod, TestCategory("Nightly"), TestCategory("Azure"), TestCategory("Storage")]
+        [Test, Category("Nightly"), Category("Azure"), Category("Storage")]
         public void SiloAddress_ToFrom_RowKey()
         {
             string ipAddress = "1.2.3.4";

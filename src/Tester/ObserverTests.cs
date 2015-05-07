@@ -25,7 +25,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans;
 using Orleans.Runtime;
 using UnitTests.GrainInterfaces;
@@ -36,7 +36,7 @@ namespace UnitTests.General
     /// <summary>
     /// Summary description for ObserverTests
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class ObserverTests : UnitTestSiloHost
     {
         private readonly TimeSpan timeout = Debugger.IsAttached ? TimeSpan.FromMinutes(5) : TimeSpan.FromSeconds(10);
@@ -52,13 +52,13 @@ namespace UnitTests.General
         public ObserverTests()
             : base() { }
 
-        [ClassCleanup]
-        public static void MyClassCleanup()
+        [TestFixtureTearDown]
+        public void MyClassCleanup()
         {
             StopAllSilos();
         }
 
-        [TestInitialize]
+        [SetUp]
         public void TestInitialize()
         {
             callbackCounter = 0;
@@ -79,7 +79,7 @@ namespace UnitTests.General
             return random.Next();
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task ObserverTest_SimpleNotification()
         {
             ResultHandle result = new ResultHandle();
@@ -96,7 +96,7 @@ namespace UnitTests.General
             await GrainFactory.DeleteObjectReference<ISimpleGrainObserver>(reference);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task ObserverTest_SimpleNotification_GeneratedFactory()
         {
             ResultHandle result = new ResultHandle();
@@ -141,7 +141,7 @@ namespace UnitTests.General
             }
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task ObserverTest_DoubleSubscriptionSameReference()
         {
             ResultHandle result = new ResultHandle();
@@ -164,7 +164,7 @@ namespace UnitTests.General
             {
                 Exception baseException = exc.GetBaseException();
                 Console.WriteLine("Received exception: {0}", baseException);
-                Assert.IsInstanceOfType(baseException, typeof(OrleansException));
+                Assert.IsInstanceOf<OrleansException>(baseException);
                 if (!baseException.Message.StartsWith("Cannot subscribe already subscribed observer"))
                 {
                     Assert.Fail("Unexpected exception message: " + baseException);
@@ -189,7 +189,7 @@ namespace UnitTests.General
             }
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task ObserverTest_SubscribeUnsubscribe()
         {
             ResultHandle result = new ResultHandle();
@@ -221,7 +221,7 @@ namespace UnitTests.General
         }
 
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task ObserverTest_Unsubscribe()
         {
             ISimpleObserverableGrain grain = GetGrain();
@@ -246,7 +246,7 @@ namespace UnitTests.General
             }
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task ObserverTest_DoubleSubscriptionDifferentReferences()
         {
             ResultHandle result = new ResultHandle();
@@ -280,7 +280,7 @@ namespace UnitTests.General
         }
 
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         public async Task ObserverTest_DeleteObject()
         {
             ResultHandle result = new ResultHandle();
@@ -309,7 +309,7 @@ namespace UnitTests.General
             result.Continue = true;
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Nightly")]
+        [Test, Category("BVT"), Category("Nightly")]
         [ExpectedException(typeof(NotSupportedException))]
         public void ObserverTest_SubscriberMustBeGrainReference()
         {
