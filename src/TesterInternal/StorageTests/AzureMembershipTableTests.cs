@@ -66,7 +66,8 @@ namespace UnitTests.StorageTests
             }            
         }
 
-        private async Task Initialize()
+        [SetUp]
+        public void TestInitialize()
         {
             deploymentId = "test-" + Guid.NewGuid();
             int generation = SiloAddress.AllocateNewGeneration();

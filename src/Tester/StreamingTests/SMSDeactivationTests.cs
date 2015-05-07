@@ -32,7 +32,6 @@ using UnitTests.Tester;
 namespace UnitTests.StreamingTests
 {
     //[DeploymentItem("OrleansConfigurationForStreamingDeactivationUnitTests.xml")]
-    //[DeploymentItem("ClientConfigurationForStreamTesting.xml")]
     //[DeploymentItem("OrleansProviders.dll")]
     [TestFixture]
     public class SMSDeactivationTests : UnitTestSiloHost
