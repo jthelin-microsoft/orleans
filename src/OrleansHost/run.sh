@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 siloName="MonoSilo"
@@ -8,8 +8,8 @@ siloName="MonoSilo"
 ##  shift
 ##fi
 
-cd $DIR
+cd "$DIR"
 
 echo SiloName= $siloName
-echo Starting Orleans node in `pwd`
-mono OrleansHost.exe $siloName $*
+echo Starting Orleans node in "$(pwd)"
+mono OrleansHost.exe $siloName "$@"
