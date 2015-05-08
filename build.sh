@@ -9,10 +9,10 @@ SrcDir=$DIR/src
 NuGetDir=$SrcDir/.nuget
 NuGetExe=$NuGetDir/NuGet.exe
 
-if [ ! -f $NuGetExe ]
+if [ ! -f "$NuGetExe" ]
 then
   echo Downloading NuGet.exe
-  wget -O $NuGetExe http://nuget.org/nuget.exe
+  wget -O "$NuGetExe" http://nuget.org/nuget.exe
 fi
 
-xbuild /p:Configuration=$CONFIGURATION $SrcDir/Orleans.sln
+xbuild /p:Configuration=$CONFIGURATION "$SrcDir/Orleans.sln"
