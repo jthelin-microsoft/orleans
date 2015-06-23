@@ -55,7 +55,6 @@ namespace UnitTests.StreamingTests
         {
         }
 
-        // Use ClassCleanup to run code after all tests in a class have run
         [TestFixtureTearDown]
         public void MyClassCleanup()
         {
@@ -89,7 +88,7 @@ namespace UnitTests.StreamingTests
             await StreamingTests_Producer_Consumer(streamId, streamProvider);
         }
 
-        [Test, Category( "Nightly" ), Category( "Streaming" )]
+        [Test, Category("Functional"), Category("Streaming")]
         public async Task SampleStreamingTests_3()
         {
             logger.Info("************************ SampleStreamingTests_3 *********************************" );

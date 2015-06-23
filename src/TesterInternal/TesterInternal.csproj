@@ -103,6 +103,10 @@
       <Project>{60498b15-9700-4623-bda0-365238f2c1ad}</Project>
       <Name>OrleansManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OrleansProviders\OrleansProviders.csproj">
+      <Project>{0054db14-2a92-4cc0-959e-a2c51f5e65d4}</Project>
+      <Name>OrleansProviders</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OrleansRuntime\OrleansRuntime.csproj">
       <Project>{6ff2004c-cdf8-479c-bf27-c6bfe8ef93e0}</Project>
       <Name>OrleansRuntime</Name>
@@ -130,6 +134,10 @@
     <ProjectReference Include="..\TestGrainInterfaces\TestGrainInterfaces.csproj">
       <Project>{3972213f-189b-41d4-90fe-38d513c1106d}</Project>
       <Name>TestGrainInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestGrains\TestGrains.csproj">
+      <Project>{eace28ae-f301-472a-b633-02b55434871b}</Project>
+      <Name>TestGrains</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

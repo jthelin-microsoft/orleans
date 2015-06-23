@@ -32,7 +32,6 @@ namespace UnitTests.MembershipTests
 {
     public class MembershipTablePluginTests
     {
-        public TestContext TestContext { get; set; }
         private static string hostName = Dns.GetHostName();
         private static readonly TraceLogger logger = TraceLogger.GetLogger("MembershipTablePluginTests");
 

@@ -33,7 +33,7 @@ namespace UnitTests.StorageTests
     public class AzureTableErrorCodeTests
     {
         [TestFixtureSetUp]
-        public static void ClassInitialize(TestContext testContext)
+        public void ClassInitialize()
         {
             //Starts the storage emulator if not started already and it exists (i.e. is installed).
             if(!StorageEmulator.TryStart())

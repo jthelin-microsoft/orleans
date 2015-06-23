@@ -52,8 +52,6 @@ namespace UnitTests.StorageTests
     [TestFixture]
     public class SiloInstanceTableManagerTests
     {
-        public TestContext TestContext { get; set; }
-
         private string deploymentId;
         private int generation;
         private SiloAddress siloAddress;
@@ -67,7 +65,7 @@ namespace UnitTests.StorageTests
         }
 
         [TestFixtureSetUp]
-        public static void ClassInitialize(TestContext testContext)
+        public static void ClassInitialize()
         {
             TraceLogger.Initialize(new NodeConfiguration());
 

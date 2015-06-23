@@ -38,8 +38,6 @@ namespace UnitTests.General
     [TestFixture]
     public class Identifiertests
     {
-        public TestContext TestContext { get; set; }
-
         private static readonly Random random = new Random();
 
         class A { }

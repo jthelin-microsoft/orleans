@@ -41,8 +41,6 @@ namespace UnitTests.MembershipTests
     [TestFixture]
     public class AzureMembershipTableTests
     {
-        public TestContext TestContext { get; set; }
-
         private string deploymentId;
         private SiloAddress siloAddress;
         private AzureBasedMembershipTable membership;
@@ -50,7 +48,7 @@ namespace UnitTests.MembershipTests
         private readonly TraceLogger logger = TraceLogger.GetLogger("AzureMembershipTableTests", TraceLogger.LoggerType.Application);
 
         [TestFixtureSetUp]
-        public static void ClassInitialize(TestContext testContext)
+        public void ClassInitialize()
         {
             TraceLogger.Initialize(new NodeConfiguration());
             TraceLogger.AddTraceLevelOverride("AzureTableDataManager", Logger.Severity.Verbose3);
@@ -67,8 +65,33 @@ namespace UnitTests.MembershipTests
             }            
         }
 
+        [TestFixtureTearDown]
+        public void ClassCleanup()
+        {
+            // Reset init timeout after tests
+            OrleansSiloInstanceManager.initTimeout = AzureTableDefaultPolicies.TableCreationTimeout;
+        }
+
         [SetUp]
         public void TestInitialize()
+        {
+            Initialize().Wait();
+        }
+
+        [TearDown]
+        public void TestCleanup()
+        {
+            if (membership != null && SiloInstanceTableTestConstants.DeleteEntriesAfterTest)
+            {
+                membership.DeleteMembershipTableEntries(deploymentId).Wait();
+                membership = null;
+            }
+
+            TestContext testContext = TestContext.CurrentContext;
+            logger.Info("Test {0} completed - Outcome = {1}", testContext.Test, testContext.Result);
+        }
+
+        private async Task Initialize()
         {
             deploymentId = "test-" + Guid.NewGuid();
             int generation = SiloAddress.AllocateNewGeneration();
@@ -87,70 +110,44 @@ namespace UnitTests.MembershipTests
             membership = mbr;
         }
 
-        [TearDown]
-        public void TestCleanup()
+        public void MembershipTable_Azure_Init()
         {
-            if (membership != null && SiloInstanceTableTestConstants.DeleteEntriesAfterTest)
-            {
-                membership.DeleteMembershipTableEntries(deploymentId).Wait();
-                membership = null;
-            }
-            logger.Info("Test {0} completed - Outcome = {1}", TestContext.Test, TestContext.Result);
-        }
-
-        [TestFixtureTearDown]
-        public static void ClassCleanup()
-        {
-            // Reset init timeout after tests
-            OrleansSiloInstanceManager.initTimeout = AzureTableDefaultPolicies.TableCreationTimeout;
-        }
-
-        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
-        public async Task MembershipTable_Azure_Init()
-        {
-            await Initialize();
             Assert.IsNotNull(membership, "Membership Table handler created");
         }
 
         [Test, Category("Functional"), Category("Membership"), Category("Azure")]
         public async Task MembershipTable_Azure_ReadAll()
         {
-            await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadAll(membership);
         }
 
         [Test, Category("Functional"), Category("Membership"), Category("Azure")]
         public async Task MembershipTable_Azure_InsertRow()
         {
-            await Initialize();
             await MembershipTablePluginTests.MembershipTable_InsertRow(membership);
         }
 
         [Test, Category("Functional"), Category("Membership"), Category("Azure")]
         public async Task MembershipTable_Azure_ReadRow_EmptyTable()
         {
-            await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_EmptyTable(membership, siloAddress);
         }
 
         [Test, Category("Functional"), Category("Membership"), Category("Azure")]
         public async Task MembershipTable_Azure_ReadRow_Insert_Read()
         {
-            await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_Insert_Read(membership, siloAddress);
         }
 
         [Test, Category("Functional"), Category("Membership"), Category("Azure")]
         public async Task MembershipTable_Azure_ReadAll_Insert_ReadAll()
         {
-            await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadAll_Insert_ReadAll(membership, siloAddress);
         }
 
         [Test, Category("Functional"), Category("Membership"), Category("Azure")]
         public async Task MembershipTable_Azure_UpdateRow()
         {
-            await Initialize();
             await MembershipTablePluginTests.MembershipTable_UpdateRow(membership);
         }
     }

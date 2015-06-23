@@ -22,36 +22,29 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 */
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Orleans;
+using Orleans.AzureUtils;
 using Orleans.Runtime;
 using Orleans.Runtime.Configuration;
 using Orleans.Runtime.MembershipService;
-using Orleans.TestingHost;
-using Orleans.AzureUtils;
 using Orleans.Runtime.Storage.Relational;
 using Orleans.Runtime.Storage.Management;
-using System.IO;
 using Orleans.Runtime.Storage.RelationalExtensions;
+using Orleans.TestingHost;
 using UnitTests.StorageTests;
 
 namespace UnitTests.MembershipTests
 {
     /// <summary>
-    /// Tests for operation of Orleans Membership Table using AzureStore - Requires access to external Azure storage
+    /// Tests for operation of Orleans Membership Table using SqlServer - Requires access to SqlServer instance on this machine.
     /// </summary>
-<<<<<<< HEAD
     [TestFixture]
-    //[DeploymentItem(@"Data\TestDb.mdf")]
-=======
-    [TestClass]
-    [DeploymentItem("CreateOrleansTables_SqlServer.sql")]
->>>>>>> Converted Orleans relational storage to vendor agnostic ADO.NET libraries
+    //[DeploymentItem("CreateOrleansTables_SqlServer.sql")]
     public class SQLMembershipTableTests
     {
-        public TestContext TestContext { get; set; }
-
         private string deploymentId;
         private SiloAddress siloAddress;
         private IMembershipTable membership;
@@ -61,7 +54,7 @@ namespace UnitTests.MembershipTests
         private readonly TraceLogger logger = TraceLogger.GetLogger("SQLMembershipTableTests", TraceLogger.LoggerType.Application);
 
         [TestFixtureSetUp]
-        public static void ClassInitialize(TestContext testContext)
+        public void ClassInitialize()
         {
             TraceLogger.Initialize(new NodeConfiguration());
             TraceLogger.AddTraceLevelOverride("SQLMembershipTableTests", Logger.Severity.Verbose3);
@@ -94,10 +87,22 @@ namespace UnitTests.MembershipTests
             //This removes the use of recovery log in case of database crashes, which
             //improves performance to some degree, depending on usage. For non-performance testing only.
             var simpleModeRes = relationalStorage.ExecuteAsync(string.Format("ALTER DATABASE [{0}] SET RECOVERY SIMPLE;", testDatabaseName)).Result;
-                        
+
             Console.WriteLine("Initializing relational databases done.");
         }
 
+        [TestFixtureTearDown]
+        public void ClassCleanup()
+        {
+            // Reset init timeout after tests
+            OrleansSiloInstanceManager.initTimeout = AzureTableDefaultPolicies.TableCreationTimeout;
+        }
+
+        [SetUp]
+        public void TestInitialize()
+        {
+            Initialize().Wait();
+        }
 
         private async Task Initialize()
         {
@@ -109,13 +114,9 @@ namespace UnitTests.MembershipTests
 
             GlobalConfiguration config = new GlobalConfiguration
             {
-<<<<<<< HEAD
                 DeploymentId = deploymentId,
-                DataConnectionString = StorageTestConstants.GetSqlConnectionString(TestContext.TestDirectory)
-=======
-                DeploymentId = deploymentId,                
-                DataConnectionString = relationalStorage.ConnectionString                
->>>>>>> Converted Orleans relational storage to vendor agnostic ADO.NET libraries
+                DataConnectionString = relationalStorage.ConnectionString
+
             };
 
             var mbr = new SqlMembershipTable();
@@ -123,8 +124,6 @@ namespace UnitTests.MembershipTests
             membership = mbr;
         }
 
-
-        // Use TestCleanup to run code after each test has run
         [TearDown]
         public void TestCleanup()
         {
@@ -133,62 +132,49 @@ namespace UnitTests.MembershipTests
                 membership.DeleteMembershipTableEntries(deploymentId).Wait();
                 membership = null;
             }
-            logger.Info("Test {0} completed - Outcome = {1}", TestContext.Test.Name, TestContext.Result);
-        }
-
-        [TestFixtureTearDown]
-        public static void ClassCleanup()
-        {
-            // Reset init timeout after tests
-            OrleansSiloInstanceManager.initTimeout = AzureTableDefaultPolicies.TableCreationTimeout;
+            TestContext testContext = TestContext.CurrentContext;
+            logger.Info("Test {0} completed - Outcome = {1}", testContext.Test.Name, testContext.Result.Status);
         }
 
         [Test, Category("Membership"), Category("SqlServer")]
-        public async Task MembershipTable_SqlServer_Init()
+        public void MembershipTable_SqlServer_Init()
         {
-            await Initialize();
             Assert.IsNotNull(membership, "Membership Table handler created");
         }
 
         [Test, Category("Membership"), Category("SqlServer")]
         public async Task MembershipTable_SqlServer_ReadAll()
         {
-            await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadAll(membership);
         }
 
         [Test, Category("Membership"), Category("SqlServer")]
         public async Task MembershipTable_SqlServer_InsertRow()
         {
-            await Initialize();
             await MembershipTablePluginTests.MembershipTable_InsertRow(membership);
         }
 
         [Test, Category("Membership"), Category("SqlServer")]
         public async Task MembershipTable_SqlServer_ReadRow_EmptyTable()
         {
-            await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_EmptyTable(membership, siloAddress);
         }
 
         [Test, Category("Membership"), Category("SqlServer")]
         public async Task MembershipTable_SqlServer_ReadRow_Insert_Read()
         {
-            await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_Insert_Read(membership, siloAddress);
         }
 
         [Test, Category("Membership"), Category("SqlServer")]
         public async Task MembershipTable_SqlServer_ReadAll_Insert_ReadAll()
         {
-            await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadAll_Insert_ReadAll(membership, siloAddress);
         }
 
         [Test, Category("Membership"), Category("SqlServer")]
         public async Task MembershipTable_SqlServer_UpdateRow()
         {
-            await Initialize();
             await MembershipTablePluginTests.MembershipTable_UpdateRow(membership);
         }
     }
