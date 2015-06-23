@@ -23,8 +23,8 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using NUnit.Framework;
 using Orleans.Serialization;
 
 namespace UnitTests.General
@@ -32,16 +32,16 @@ namespace UnitTests.General
     /// <summary>
     /// Summary description for SerializationTests
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class SerializationTests
     {
-        [TestInitialize]
+        [SetUp]
         public void InitializeForTesting()
         {
             SerializationManager.InitializeForTesting();
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Serialization")]
+        [Test, Category("BVT"), Category("Functional"), Category("Serialization")]
         public void SerializationTests_DateTime()
         {
             // Local Kind
@@ -66,7 +66,7 @@ namespace UnitTests.General
             Assert.AreEqual(inputUnspecified.Kind, outputUnspecified.Kind);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Serialization")]
+        [Test, Category("BVT"), Category("Functional"), Category("Serialization")]
         public void SerializationTests_JObject()
         {
             const string json = @"{ 
