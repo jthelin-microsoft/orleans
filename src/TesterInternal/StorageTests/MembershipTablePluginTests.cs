@@ -24,13 +24,9 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans;
-using Orleans.AzureUtils;
 using Orleans.Runtime;
-using Orleans.Runtime.Configuration;
-using Orleans.Runtime.MembershipService;
-using Orleans.TestingHost;
 
 namespace UnitTests.StorageTests
 {
