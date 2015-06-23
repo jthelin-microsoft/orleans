@@ -23,7 +23,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans;
 using Orleans.Runtime;
 using Orleans.Runtime.Configuration;
@@ -37,7 +37,7 @@ namespace UnitTests.StorageTests
     /// <summary>
     /// Tests for operation of Orleans Membership Table using AzureStore - Requires access to external Azure storage
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class AzureMembershipTableTests
     {
         public TestContext TestContext { get; set; }
@@ -48,8 +48,7 @@ namespace UnitTests.StorageTests
         private static readonly TimeSpan timeout = TimeSpan.FromMinutes(1);
         private readonly TraceLogger logger = TraceLogger.GetLogger("AzureMembershipTableTests", TraceLogger.LoggerType.Application);
 
-        // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize]
+        [TestFixtureSetUp]
         public static void ClassInitialize(TestContext testContext)
         {
             TraceLogger.Initialize(new NodeConfiguration());
@@ -86,8 +85,7 @@ namespace UnitTests.StorageTests
             membership = mbr;
         }
 
-        // Use TestCleanup to run code after each test has run
-        [TestCleanup]
+        [TearDown]
         public void TestCleanup()
         {
             if (membership != null && SiloInstanceTableTestConstants.DeleteEntriesAfterTest)
@@ -95,52 +93,52 @@ namespace UnitTests.StorageTests
                 membership.DeleteMembershipTableEntries(deploymentId).Wait();
                 membership = null;
             }
-            logger.Info("Test {0} completed - Outcome = {1}", TestContext.TestName, TestContext.CurrentTestOutcome);
+            logger.Info("Test {0} completed - Outcome = {1}", TestContext.Test, TestContext.Result);
         }
 
-        [ClassCleanup]
+        [TestFixtureTearDown]
         public static void ClassCleanup()
         {
             // Reset init timeout after tests
             OrleansSiloInstanceManager.initTimeout = AzureTableDefaultPolicies.TableCreationTimeout;
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Membership"), TestCategory("Azure")]
+        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
         public async Task Membership_Azure_Init()
         {
             await Initialize();
             Assert.IsNotNull(membership, "Membership Table handler created");
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Membership"), TestCategory("Azure")]
+        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
         public async Task Membership_Azure_ReadAll()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadAll(membership);
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Membership"), TestCategory("Azure")]
+        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
         public async Task Membership_Azure_InsertRow()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_InsertRow(membership);
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Membership"), TestCategory("Azure")]
+        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
         public async Task Membership_Azure_ReadRow_EmptyTable()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_EmptyTable(membership, siloAddress);
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Membership"), TestCategory("Azure")]
+        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
         public async Task Membership_Azure_ReadRow_Insert_Read()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_Insert_Read(membership, siloAddress);
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Membership"), TestCategory("Azure")]
+        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
         public async Task Membership_Azure_ReadAll_Insert_ReadAll()
         {
             await Initialize();

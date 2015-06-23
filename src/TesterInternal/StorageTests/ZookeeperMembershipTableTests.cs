@@ -23,11 +23,10 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans;
 using Orleans.Runtime;
 using Orleans.Runtime.Configuration;
-using Orleans.Runtime.Host;
 using Orleans.TestingHost;
 
 
@@ -36,8 +35,8 @@ namespace UnitTests.StorageTests
     /// <summary>
     /// Tests for operation of Orleans SiloInstanceManager using ZookeeperStore - Requires access to external Zookeeper storage
     /// </summary>
-    [TestClass]
-    [DeploymentItem("OrleansZooKeeperUtils.dll")]
+    [TestFixture]
+    //[DeploymentItem("OrleansZooKeeperUtils.dll")]
     public class ZookeeperMembershipTableTests
     {
         public TestContext TestContext { get; set; }
@@ -49,15 +48,13 @@ namespace UnitTests.StorageTests
         private readonly TraceLogger logger = TraceLogger.GetLogger("ZookeeperMembershipTableTests", TraceLogger.LoggerType.Application);
 
 
-        // Use ClassInitialize to run code before running the first test in the class
-        [ClassInitialize]
+        [TestFixtureSetUp]
         public static void ClassInitialize(TestContext testContext)
         {
             TraceLogger.Initialize(new NodeConfiguration());        
         }
 
-        // Use TestInitialize to run code before running each test 
-        [TestInitialize]
+        [SetUp]
         private async Task Initialize()
         {
             deploymentId = "test-" + Guid.NewGuid();
@@ -77,8 +74,7 @@ namespace UnitTests.StorageTests
             membership = mbr;
         }
 
-        // Use TestCleanup to run code after each test has run
-        [TestCleanup]
+        [TearDown]
         public void TestCleanup()
         {
             if (membership != null && SiloInstanceTableTestConstants.DeleteEntriesAfterTest)
@@ -88,21 +84,21 @@ namespace UnitTests.StorageTests
             }
         }
 
-        [TestMethod, TestCategory("Membership"), TestCategory("ZooKeeper")]
+        [Test, Category("Membership"), Category("ZooKeeper")]
         public async Task Membership_ZooKeeper_Init()
         {
             await Initialize();
             Assert.IsNotNull(membership, "Membership Table handler created");
         }
 
-        [TestMethod, TestCategory("Membership"), TestCategory("ZooKeeper")]
+        [Test, Category("Membership"), Category("ZooKeeper")]
         public async Task Membership_ZooKeeper_ReadAll()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadAll(membership);
         }
 
-        [TestMethod, TestCategory("Membership"), TestCategory("ZooKeeper")]
+        [Test, Category("Membership"), Category("ZooKeeper")]
         public async Task Membership_ZooKeeper_InsertRow()
         {
             await Initialize();
@@ -110,21 +106,21 @@ namespace UnitTests.StorageTests
         }
 
 
-        [TestMethod, TestCategory("Membership"), TestCategory("ZooKeeper")]
+        [Test, Category("Membership"), Category("ZooKeeper")]
         public async Task Membership_ZooKeeper_ReadRow_EmptyTable()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_EmptyTable(membership, siloAddress);
         }
 
-        [TestMethod, TestCategory("Membership"), TestCategory("ZooKeeper")]
+        [Test, Category("Membership"), Category("ZooKeeper")]
         public async Task Membership_ZooKeeper_ReadRow_Insert_Read()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_Insert_Read(membership, siloAddress);
         }
 
-        [TestMethod, TestCategory("Membership"), TestCategory("ZooKeeper")]
+        [Test, Category("Membership"), Category("ZooKeeper")]
         public async Task Membership_ZooKeeper_ReadAll_Insert_ReadAll()
         {
             await Initialize();

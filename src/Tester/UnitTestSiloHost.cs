@@ -21,7 +21,6 @@ OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHE
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Orleans.TestingHost;
 
 namespace UnitTests.Tester
@@ -32,10 +31,10 @@ namespace UnitTests.Tester
     /// deployment items required by tests 
     /// - such as the TestGrain assemblies, the client and server config files.
     /// </summary>
-    [DeploymentItem("OrleansConfigurationForTesting.xml")]
-    [DeploymentItem("ClientConfigurationForTesting.xml")]
-    [DeploymentItem("TestGrainInterfaces.dll")]
-    [DeploymentItem("TestGrains.dll")]
+    //[DeploymentItem("OrleansConfigurationForTesting.xml")]
+    //[DeploymentItem("ClientConfigurationForTesting.xml")]
+    //[DeploymentItem("TestGrainInterfaces.dll")]
+    //[DeploymentItem("TestGrains.dll")]
     public class UnitTestSiloHost : TestingSiloHost
     {
         public UnitTestSiloHost() // : base()

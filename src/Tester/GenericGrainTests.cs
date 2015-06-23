@@ -24,7 +24,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR TH
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Orleans;
 using Orleans.Runtime;
 using Orleans.TestingHost;
@@ -36,7 +36,7 @@ namespace UnitTests.General
     /// <summary>
     /// Unit tests for grains implementing generic interfaces
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class GenericGrainTests : UnitTestSiloHost
     {
         private static readonly TimeSpan timeout = TimeSpan.FromSeconds(10);
@@ -62,7 +62,7 @@ namespace UnitTests.General
             return random.Next();
         }
 
-        [ClassCleanup]
+        [TestFixtureTearDown]
         public static void MyClassCleanup()
         {
             StopAllSilos();
@@ -70,7 +70,7 @@ namespace UnitTests.General
 
         /// Can instantiate multiple concrete grain types that implement
         /// different specializations of the same generic interface
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task GenericGrainTests_ConcreteGrainWithGenericInterfaceGetGrain()
         {
 
@@ -92,7 +92,7 @@ namespace UnitTests.General
         }
 
         /// Multiple GetGrain requests with the same id return the same concrete grain 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task GenericGrainTests_ConcreteGrainWithGenericInterfaceMultiplicity()
         {
             var grainId = GetRandomGrainId();
@@ -107,7 +107,7 @@ namespace UnitTests.General
         }
 
         /// Can instantiate generic grain specializations
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task GenericGrainTests_SimpleGenericGrainGetGrain()
         {
 
@@ -134,7 +134,7 @@ namespace UnitTests.General
         }
 
         /// Multiple GetGrain requests with the same id return the same generic grain specialization
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task GenericGrainTests_SimpleGenericGrainMultiplicity()
         {
             var grainId = GetRandomGrainId();
@@ -151,7 +151,7 @@ namespace UnitTests.General
 
         /// If both a concrete implementation and a generic implementation of a 
         /// generic interface exist, prefer the concrete implementation.
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task GenericGrainTests_PreferConcreteGrainImplementationOfGenericInterface()
         {
             var grainOfDouble1 = GetGrain<ISimpleGenericGrain<double>>();
@@ -172,7 +172,7 @@ namespace UnitTests.General
         }
 
         /// Multiple GetGrain requests with the same id return the same concrete grain implementation
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task GenericGrainTests_PreferConcreteGrainImplementationOfGenericInterfaceMultiplicity()
         {
             var grainId = GetRandomGrainId();
@@ -190,7 +190,7 @@ namespace UnitTests.General
         }
 
         /// Can instantiate concrete grains that implement multiple generic interfaces
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task GenericGrainTests_ConcreteGrainWithMultipleGenericInterfacesGetGrain()
         {
             var grain1 = GetGrain<ISimpleGenericGrain<int>>();
@@ -211,7 +211,7 @@ namespace UnitTests.General
         }
 
         /// Multiple GetGrain requests with the same id and interface return the same concrete grain implementation
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task GenericGrainTests_ConcreteGrainWithMultipleGenericInterfacesMultiplicity1()
         {
             var grainId = GetRandomGrainId();
@@ -231,7 +231,7 @@ namespace UnitTests.General
         }
 
         /// Multiple GetGrain requests with the same id and different interfaces return the same concrete grain implementation
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task GenericGrainTests_ConcreteGrainWithMultipleGenericInterfacesMultiplicity2()
         {
             var grainId = GetRandomGrainId();
@@ -249,7 +249,7 @@ namespace UnitTests.General
             Assert.AreEqual("100", floatResult);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task GenericGrainTests_UseGenericFactoryInsideGrain()
         {
             var grainId = GetRandomGrainId();
@@ -260,14 +260,14 @@ namespace UnitTests.General
         }
 
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_SimpleGrain_GetGrain()
         {
             var grain = GrainFactory.GetGrain<ISimpleGenericGrain1<int>>(grainId++);
             await grain.GetA();
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_SimpleGrainControlFlow()
         {
             var a = random.Next(100);
@@ -284,7 +284,7 @@ namespace UnitTests.General
             Assert.AreEqual(expected, stringPromise.Result);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_SimpleGrainDataFlow()
         {
             var a = random.Next(100);
@@ -301,7 +301,7 @@ namespace UnitTests.General
             Assert.AreEqual(expected, x, "Got expected result");
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("Functional"), Category("Generics")]
         public async Task Generic_SimpleGrain2_GetGrain()
         {
             var g1 = GrainFactory.GetGrain<ISimpleGenericGrain1<int>>(grainId++);
@@ -312,7 +312,7 @@ namespace UnitTests.General
             await g3.GetA();
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_SimpleGrainControlFlow2_GetAB()
         {
             var a = random.Next(100);
@@ -331,7 +331,7 @@ namespace UnitTests.General
             Assert.AreEqual(expected, r3, "Grain 3");
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_SimpleGrainControlFlow3()
         {
             ISimpleGenericGrain2<int, float> g = GrainFactory.GetGrain<ISimpleGenericGrain2<int, float>>(grainId++);
@@ -340,7 +340,7 @@ namespace UnitTests.General
             Assert.AreEqual("3x1.25", await g.GetAxB());
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_SelfManagedGrainControlFlow()
         {
             IGenericSelfManagedGrain<int, float> g = GrainFactory.GetGrain<IGenericSelfManagedGrain<int, float>>(0);
@@ -349,7 +349,7 @@ namespace UnitTests.General
             Assert.AreEqual("3x1.25", await g.GetAxB());
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task GrainWithListFields()
         {
             string a = random.Next(100).ToString(CultureInfo.InvariantCulture);
@@ -368,7 +368,7 @@ namespace UnitTests.General
                 "Result: r[0]={0}, r[1]={1}", r1[0], r1[1]);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_GrainWithListFields()
         {
             int a = random.Next(100);
@@ -388,7 +388,7 @@ namespace UnitTests.General
                 "Result: r[0]={0}, r[1]={1}", r1[0], r1[1]);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_GrainWithNoProperties_ControlFlow()
         {
             int a = random.Next(100);
@@ -401,7 +401,7 @@ namespace UnitTests.General
             Assert.AreEqual(expected, r1);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task GrainWithNoProperties_ControlFlow()
         {
             int a = random.Next(100);
@@ -415,7 +415,7 @@ namespace UnitTests.General
             Assert.AreEqual(expected, r1);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_ReaderWriterGrain1()
         {
             int a = random.Next(100);
@@ -425,7 +425,7 @@ namespace UnitTests.General
             Assert.AreEqual(a, res);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_ReaderWriterGrain2()
         {
             int a = random.Next(100);
@@ -440,7 +440,7 @@ namespace UnitTests.General
             Assert.AreEqual(b, r2);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_ReaderWriterGrain3()
         {
             int a = random.Next(100);
@@ -459,7 +459,7 @@ namespace UnitTests.General
             Assert.AreEqual(c, r3);
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_Non_Primitive_Type_Argument()
         {
             IEchoHubGrain<Guid, string> g1 = GrainFactory.GetGrain<IEchoHubGrain<Guid, string>>(1);
@@ -479,7 +479,7 @@ namespace UnitTests.General
             Assert.AreEqual(3m, await g3.GetX());
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_Echo_Chain_1()
         {
             const string msg1 = "Hello from EchoGenericChainGrain-1";
@@ -490,7 +490,7 @@ namespace UnitTests.General
             Assert.AreEqual(msg1, received, "Echo");
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_Echo_Chain_2()
         {
             const string msg2 = "Hello from EchoGenericChainGrain-2";
@@ -501,7 +501,7 @@ namespace UnitTests.General
             Assert.AreEqual(msg2, received, "Echo");
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_Echo_Chain_3()
         {
             const string msg3 = "Hello from EchoGenericChainGrain-3";
@@ -512,7 +512,7 @@ namespace UnitTests.General
             Assert.AreEqual(msg3, received, "Echo");
         }
 
-        [TestMethod, TestCategory("BVT"), TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("BVT"), Category("Functional"), Category("Generics")]
         public async Task Generic_Echo_Chain_4()
         {
             const string msg4 = "Hello from EchoGenericChainGrain-4";
@@ -523,7 +523,7 @@ namespace UnitTests.General
             Assert.AreEqual(msg4, received, "Echo");
         }
 
-        [TestMethod, TestCategory("Failures"), TestCategory("Generics")]
+        [Test, Category("Failures"), Category("Generics")]
         public async Task Generic_Echo_Chain_5()
         {
             const string msg5 = "Hello from EchoGenericChainGrain-5";
@@ -534,7 +534,7 @@ namespace UnitTests.General
             Assert.AreEqual(msg5, received, "Echo");
         }
 
-        [TestMethod, TestCategory("Failures"), TestCategory("Generics")]
+        [Test, Category("Failures"), Category("Generics")]
         public async Task Generic_Echo_Chain_6()
         {
             const string msg6 = "Hello from EchoGenericChainGrain-6";
@@ -546,7 +546,7 @@ namespace UnitTests.General
         }
 
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("Functional"), Category("Generics")]
         public async Task Generic_1Argument_GenericCallOnly()
         {
             var grain = GrainFactory.GetGrain<IGeneric1Argument<string>>(Guid.NewGuid(), "UnitTests.Grains.Generic1ArgumentGrain");
@@ -555,7 +555,7 @@ namespace UnitTests.General
             Assert.AreEqual(s1, s2);
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("Functional"), Category("Generics")]
         [ExpectedException(typeof(OrleansException))]
         public async Task Generic_1Argument_NonGenericCallFirst()
         {
@@ -571,7 +571,7 @@ namespace UnitTests.General
             }
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("Functional"), Category("Generics")]
         [ExpectedException(typeof(OrleansException))]
         public async Task Generic_1Argument_GenericCallFirst()
         {
@@ -591,7 +591,7 @@ namespace UnitTests.General
             }
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Generics")]
+        [Test, Category("Functional"), Category("Generics")]
         public async Task DifferentTypeArgsProduceIndependentActivations()
         {
             var grain1 = GrainFactory.GetGrain<IDbGrain<int>>(0);
@@ -602,7 +602,7 @@ namespace UnitTests.General
             Assert.IsNull(v);
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Generics"), TestCategory("Cast")]
+        [Test, Category("Functional"), Category("Generics"), Category("Cast")]
         public async Task Generic_CastToSelf()
         {
             var id = Guid.NewGuid();
@@ -613,7 +613,7 @@ namespace UnitTests.General
             Assert.AreEqual(s1, s2);
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Generics"), TestCategory("Echo")]
+        [Test, Category("Functional"), Category("Generics"), Category("Echo")]
         public async Task Generic_PingSelf()
         {
             var id = Guid.NewGuid();
@@ -623,7 +623,7 @@ namespace UnitTests.General
             Assert.AreEqual(s1, s2);
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Generics"), TestCategory("Echo")]
+        [Test, Category("Functional"), Category("Generics"), Category("Echo")]
         public async Task Generic_PingOther()
         {
             var id = Guid.NewGuid();
@@ -635,7 +635,7 @@ namespace UnitTests.General
             Assert.AreEqual(s1, s2);
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Generics"), TestCategory("Echo")]
+        [Test, Category("Functional"), Category("Generics"), Category("Echo")]
         public async Task Generic_PingSelfThroughOther()
         {
             var id = Guid.NewGuid();
@@ -647,7 +647,7 @@ namespace UnitTests.General
             Assert.AreEqual(s1, s2);
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Generics"), TestCategory("ActivateDeactivate")]
+        [Test, Category("Functional"), Category("Generics"), Category("ActivateDeactivate")]
         public async Task Generic_ScheduleDelayedPingAndDeactivate()
         {
             var id = Guid.NewGuid();
