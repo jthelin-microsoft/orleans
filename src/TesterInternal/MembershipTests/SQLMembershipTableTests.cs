@@ -30,23 +30,33 @@ using Orleans.Runtime.Configuration;
 using Orleans.Runtime.MembershipService;
 using Orleans.TestingHost;
 using Orleans.AzureUtils;
+using Orleans.Runtime.Storage.Relational;
+using Orleans.Runtime.Storage.Management;
+using System.IO;
+using Orleans.Runtime.Storage.RelationalExtensions;
 using UnitTests.StorageTests;
-
 
 namespace UnitTests.MembershipTests
 {
     /// <summary>
     /// Tests for operation of Orleans Membership Table using AzureStore - Requires access to external Azure storage
     /// </summary>
+<<<<<<< HEAD
     [TestFixture]
     //[DeploymentItem(@"Data\TestDb.mdf")]
+=======
+    [TestClass]
+    [DeploymentItem("CreateOrleansTables_SqlServer.sql")]
+>>>>>>> Converted Orleans relational storage to vendor agnostic ADO.NET libraries
     public class SQLMembershipTableTests
     {
         public TestContext TestContext { get; set; }
 
         private string deploymentId;
         private SiloAddress siloAddress;
-        private SqlMembershipTable membership;
+        private IMembershipTable membership;
+        private static IRelationalStorage relationalStorage;
+        private const string testDatabaseName = "OrleansTest";
         private static readonly TimeSpan timeout = TimeSpan.FromMinutes(1);
         private readonly TraceLogger logger = TraceLogger.GetLogger("SQLMembershipTableTests", TraceLogger.LoggerType.Application);
 
@@ -59,12 +69,35 @@ namespace UnitTests.MembershipTests
             // Set shorter init timeout for these tests
             OrleansSiloInstanceManager.initTimeout = TimeSpan.FromSeconds(20);
 
-            //Starts the storage emulator if not started already and it exists (i.e. is installed).
-            if(!StorageEmulator.TryStart())
+            Console.WriteLine("Initializing relational databases...");
+            relationalStorage = RelationalStorageUtilities.CreateDefaultSqlServerStorageInstance();
+
+            Console.WriteLine("Dropping and recreating database '{0}' with connectionstring '{1}'", testDatabaseName, relationalStorage.ConnectionString);
+            if(relationalStorage.ExistsDatabaseAsync(testDatabaseName).Result)
             {
-                Console.WriteLine("Azure Storage Emulator could not be started.");
-            }            
+                relationalStorage.DropDatabaseAsync(testDatabaseName).Wait();
+            }
+            relationalStorage.CreateDatabaseAsync(testDatabaseName).Wait();
+
+            //The old storage instance has the previous connection string, time have a new handle with a new connection string...
+            relationalStorage = relationalStorage.CreateNewStorageInstance(testDatabaseName);
+
+            Console.WriteLine("Creating database tables...");
+            var creationScripts = RelationalStorageUtilities.RemoveBatchSeparators(File.ReadAllText("CreateOrleansTables_SqlServer.sql"));
+            foreach(var creationScript in creationScripts)
+            {
+                var res = relationalStorage.ExecuteAsync(creationScript).Result;
+            }
+
+            //Currently there's only one database under test, SQL Server. So this as the other
+            //setup is hardcoded here: putting the database in simple recovery mode.
+            //This removes the use of recovery log in case of database crashes, which
+            //improves performance to some degree, depending on usage. For non-performance testing only.
+            var simpleModeRes = relationalStorage.ExecuteAsync(string.Format("ALTER DATABASE [{0}] SET RECOVERY SIMPLE;", testDatabaseName)).Result;
+                        
+            Console.WriteLine("Initializing relational databases done.");
         }
+
 
         private async Task Initialize()
         {
@@ -76,14 +109,20 @@ namespace UnitTests.MembershipTests
 
             GlobalConfiguration config = new GlobalConfiguration
             {
+<<<<<<< HEAD
                 DeploymentId = deploymentId,
                 DataConnectionString = StorageTestConstants.GetSqlConnectionString(TestContext.TestDirectory)
+=======
+                DeploymentId = deploymentId,                
+                DataConnectionString = relationalStorage.ConnectionString                
+>>>>>>> Converted Orleans relational storage to vendor agnostic ADO.NET libraries
             };
 
             var mbr = new SqlMembershipTable();
             await mbr.InitializeMembershipTable(config, true, logger).WithTimeout(timeout);
             membership = mbr;
         }
+
 
         // Use TestCleanup to run code after each test has run
         [TearDown]
