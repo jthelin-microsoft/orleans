@@ -18,25 +18,28 @@ SET OutDir=%CMDHOME%\..\Binaries\%CONFIGURATION%
 
 cd /d "%CMDHOME%"
 
+if .%TEST_CATEGORIES%. == .. set TEST_CATEGORIES=BVT
+
 if exist "%NUNIT_RUNNER%" (
-    @echo Using NUnit Runner "%NUGET_RUNNER%"
+    @echo Using NUnit Runner "%NUGET_RUNNER%" for test categories %TEST_CATEGORIES%
 
     set TEST_ARGS= /noshadow /framework=4.5 /out=nunit.log
 	set TEST_FILES= %OutDir%\Tester.dll %OutDir%\TesterInternal.dll 
-    set TEST_GROUPS= /include=BVT
+    set TEST_GROUPS= /include=%TEST_CATEGORIES%
 
     set TEST_EXE="%NUNIT_RUNNER%"
 ) else (
-    @echo Using MsTest Runner "%MSTEST_RUNNER%"
+    @echo Using MsTest Runner "%MSTEST_RUNNER%" for test categories %TEST_CATEGORIES%
 
     set TEST_ARGS= 
 	set TEST_FILES= /testcontainer:%OutDir%\Tester.dll /testcontainer:%OutDir%\TesterInternal.dll 
-    set TEST_GROUPS= /category:BVT
+    set TEST_GROUPS= /category:%TEST_CATEGORIES%
 
     set TEST_EXE="%MSTEST_RUNNER%"
 )
 
-@echo Running Test runner command %TEST_EXE% %TEST_ARGS% %TEST_GROUPS% %TEST_FILES%
+@echo Running Test runner command =
+@echo %TEST_EXE% %TEST_ARGS% %TEST_GROUPS% %TEST_FILES%
 
 %TEST_EXE% %TEST_ARGS% %TEST_GROUPS% %TEST_FILES%
 
