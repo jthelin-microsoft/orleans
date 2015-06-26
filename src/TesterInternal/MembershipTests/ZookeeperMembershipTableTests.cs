@@ -27,47 +27,36 @@ using NUnit.Framework;
 using Orleans;
 using Orleans.Runtime;
 using Orleans.Runtime.Configuration;
-using Orleans.Runtime.MembershipService;
 using Orleans.TestingHost;
-using Orleans.AzureUtils;
+using UnitTests.StorageTests;
 
 
-namespace UnitTests.StorageTests
+namespace UnitTests.MembershipTests
 {
     /// <summary>
-    /// Tests for operation of Orleans Membership Table using AzureStore - Requires access to external Azure storage
+    /// Tests for operation of Orleans SiloInstanceManager using ZookeeperStore - Requires access to external Zookeeper storage
     /// </summary>
     [TestFixture]
-    public class AzureMembershipTableTests
+    //[DeploymentItem("OrleansZooKeeperUtils.dll")]
+    public class ZookeeperMembershipTableTests
     {
         public TestContext TestContext { get; set; }
 
         private string deploymentId;
         private SiloAddress siloAddress;
-        private AzureBasedMembershipTable membership;
+        private IMembershipTable membership;
         private static readonly TimeSpan timeout = TimeSpan.FromMinutes(1);
-        private readonly TraceLogger logger = TraceLogger.GetLogger("AzureMembershipTableTests", TraceLogger.LoggerType.Application);
+        private readonly TraceLogger logger = TraceLogger.GetLogger("ZookeeperMembershipTableTests", TraceLogger.LoggerType.Application);
+
 
         [TestFixtureSetUp]
         public static void ClassInitialize(TestContext testContext)
         {
-            TraceLogger.Initialize(new NodeConfiguration());
-            TraceLogger.AddTraceLevelOverride("AzureTableDataManager", Logger.Severity.Verbose3);
-            TraceLogger.AddTraceLevelOverride("OrleansSiloInstanceManager", Logger.Severity.Verbose3);
-            TraceLogger.AddTraceLevelOverride("Storage", Logger.Severity.Verbose3);
-
-            // Set shorter init timeout for these tests
-            OrleansSiloInstanceManager.initTimeout = TimeSpan.FromSeconds(20);
-
-            //Starts the storage emulator if not started already and it exists (i.e. is installed).
-            if(!StorageEmulator.TryStart())
-            {
-                Console.WriteLine("Azure Storage Emulator could not be started.");
-            }            
+            TraceLogger.Initialize(new NodeConfiguration());        
         }
 
         [SetUp]
-        public void TestInitialize()
+        private async Task Initialize()
         {
             deploymentId = "test-" + Guid.NewGuid();
             int generation = SiloAddress.AllocateNewGeneration();
@@ -78,10 +67,10 @@ namespace UnitTests.StorageTests
             GlobalConfiguration config = new GlobalConfiguration
             {
                 DeploymentId = deploymentId,
-                DataConnectionString = StorageTestConstants.DataConnectionString
+                DataConnectionString = StorageTestConstants.GetZooKeeperConnectionString()
             };
 
-            var mbr = new AzureBasedMembershipTable();
+            var mbr = AssemblyLoader.LoadAndCreateInstance<IMembershipTable>("OrleansZooKeeperUtils.dll", logger);
             await mbr.InitializeMembershipTable(config, true, logger).WithTimeout(timeout);
             membership = mbr;
         }
@@ -94,56 +83,56 @@ namespace UnitTests.StorageTests
                 membership.DeleteMembershipTableEntries(deploymentId).Wait();
                 membership = null;
             }
-            logger.Info("Test {0} completed - Outcome = {1}", TestContext.Test, TestContext.Result);
         }
 
-        [TestFixtureTearDown]
-        public static void ClassCleanup()
-        {
-            // Reset init timeout after tests
-            OrleansSiloInstanceManager.initTimeout = AzureTableDefaultPolicies.TableCreationTimeout;
-        }
-
-        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
-        public async Task Membership_Azure_Init()
+        [Test, Category("Membership"), Category("ZooKeeper")]
+        public async Task Membership_ZooKeeper_Init()
         {
             await Initialize();
             Assert.IsNotNull(membership, "Membership Table handler created");
         }
 
-        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
-        public async Task Membership_Azure_ReadAll()
+        [Test, Category("Membership"), Category("ZooKeeper")]
+        public async Task Membership_ZooKeeper_ReadAll()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadAll(membership);
         }
 
-        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
-        public async Task Membership_Azure_InsertRow()
+        [Test, Category("Membership"), Category("ZooKeeper")]
+        public async Task Membership_ZooKeeper_InsertRow()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_InsertRow(membership);
         }
 
-        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
-        public async Task Membership_Azure_ReadRow_EmptyTable()
+
+        [Test, Category("Membership"), Category("ZooKeeper")]
+        public async Task Membership_ZooKeeper_ReadRow_EmptyTable()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_EmptyTable(membership, siloAddress);
         }
 
-        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
-        public async Task Membership_Azure_ReadRow_Insert_Read()
+        [Test, Category("Membership"), Category("ZooKeeper")]
+        public async Task Membership_ZooKeeper_ReadRow_Insert_Read()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_Insert_Read(membership, siloAddress);
         }
 
-        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
-        public async Task Membership_Azure_ReadAll_Insert_ReadAll()
+        [Test, Category("Membership"), Category("ZooKeeper")]
+        public async Task Membership_ZooKeeper_ReadAll_Insert_ReadAll()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadAll_Insert_ReadAll(membership, siloAddress);
+        }
+
+        [TestMethod, TestCategory("Membership"), TestCategory("ZooKeeper")]
+        public async Task Membership_ZooKeeper_UpdateRow()
+        {
+            await Initialize();
+            await MembershipTablePluginTests.MembershipTable_UpdateRow(membership);
         }
     }
 }
