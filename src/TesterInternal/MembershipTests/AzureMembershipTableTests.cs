@@ -106,49 +106,49 @@ namespace UnitTests.MembershipTests
         }
 
         [Test, Category("Functional"), Category("Membership"), Category("Azure")]
-        public async Task Membership_Azure_Init()
+        public async Task MembershipTable_Azure_Init()
         {
             await Initialize();
             Assert.IsNotNull(membership, "Membership Table handler created");
         }
 
         [Test, Category("Functional"), Category("Membership"), Category("Azure")]
-        public async Task Membership_Azure_ReadAll()
+        public async Task MembershipTable_Azure_ReadAll()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadAll(membership);
         }
 
         [Test, Category("Functional"), Category("Membership"), Category("Azure")]
-        public async Task Membership_Azure_InsertRow()
+        public async Task MembershipTable_Azure_InsertRow()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_InsertRow(membership);
         }
 
         [Test, Category("Functional"), Category("Membership"), Category("Azure")]
-        public async Task Membership_Azure_ReadRow_EmptyTable()
+        public async Task MembershipTable_Azure_ReadRow_EmptyTable()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_EmptyTable(membership, siloAddress);
         }
 
         [Test, Category("Functional"), Category("Membership"), Category("Azure")]
-        public async Task Membership_Azure_ReadRow_Insert_Read()
+        public async Task MembershipTable_Azure_ReadRow_Insert_Read()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_Insert_Read(membership, siloAddress);
         }
 
         [Test, Category("Functional"), Category("Membership"), Category("Azure")]
-        public async Task Membership_Azure_ReadAll_Insert_ReadAll()
+        public async Task MembershipTable_Azure_ReadAll_Insert_ReadAll()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadAll_Insert_ReadAll(membership, siloAddress);
         }
 
-        [TestMethod, TestCategory("Functional"), TestCategory("Membership"), TestCategory("Azure")]
-        public async Task Membership_Azure_UpdateRow()
+        [Test, Category("Functional"), Category("Membership"), Category("Azure")]
+        public async Task MembershipTable_Azure_UpdateRow()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_UpdateRow(membership);

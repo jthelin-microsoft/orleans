@@ -105,49 +105,49 @@ namespace UnitTests.MembershipTests
         }
 
         [Test, Category("Membership"), Category("SqlServer")]
-        public async Task Membership_SqlServer_Init()
+        public async Task MembershipTable_SqlServer_Init()
         {
             await Initialize();
             Assert.IsNotNull(membership, "Membership Table handler created");
         }
 
         [Test, Category("Membership"), Category("SqlServer")]
-        public async Task Membership_SqlServer_ReadAll()
+        public async Task MembershipTable_SqlServer_ReadAll()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadAll(membership);
         }
 
         [Test, Category("Membership"), Category("SqlServer")]
-        public async Task Membership_SqlServer_InsertRow()
+        public async Task MembershipTable_SqlServer_InsertRow()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_InsertRow(membership);
         }
 
         [Test, Category("Membership"), Category("SqlServer")]
-        public async Task Membership_SqlServer_ReadRow_EmptyTable()
+        public async Task MembershipTable_SqlServer_ReadRow_EmptyTable()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_EmptyTable(membership, siloAddress);
         }
 
         [Test, Category("Membership"), Category("SqlServer")]
-        public async Task Membership_SqlServer_ReadRow_Insert_Read()
+        public async Task MembershipTable_SqlServer_ReadRow_Insert_Read()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadRow_Insert_Read(membership, siloAddress);
         }
 
         [Test, Category("Membership"), Category("SqlServer")]
-        public async Task Membership_SqlServer_ReadAll_Insert_ReadAll()
+        public async Task MembershipTable_SqlServer_ReadAll_Insert_ReadAll()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_ReadAll_Insert_ReadAll(membership, siloAddress);
         }
 
-        [TestMethod, TestCategory("Membership"), TestCategory("SqlServer")]
-        public async Task Membership_SqlServer_UpdateRow()
+        [Test, Category("Membership"), Category("SqlServer")]
+        public async Task MembershipTable_SqlServer_UpdateRow()
         {
             await Initialize();
             await MembershipTablePluginTests.MembershipTable_UpdateRow(membership);
