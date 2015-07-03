@@ -19,16 +19,41 @@ namespace UnitTests.MembershipTests
 {
     public class LivenessTestsBase : UnitTestSiloHost
     {
+        private static readonly TestingSiloOptions noStart = new TestingSiloOptions
+        {
+            StartPrimary = false,
+            StartSecondary = false,
+            StartClient = false,
+        };
+
         private const int numAdditionalSilos = 1;
         private const int numGrains = 100;
 
-        protected LivenessTestsBase(TestingSiloOptions siloOptions)
-            : base(siloOptions)
-        { }
+        protected LivenessTestsBase()
+            : base(noStart)
+        {
+            // For Liveness tests, we always want to start with known silo setup.
+            // Each test will start new set of silos in TestInitialize and stop them in TestCleanup.
+        }
 
-        protected LivenessTestsBase(TestingSiloOptions siloOptions, TestingClientOptions clientOptions)
-            : base(siloOptions, clientOptions)
-        { }
+        protected void DoTestInitialize(TestingSiloOptions siloOptions)
+        {
+            // Regardless of the membership type that the silos use, 
+            // they always listen on the same TCP gateway ports,
+            // so we use that apriori data explicitly here.
+            TestingClientOptions clientOptions = new TestingClientOptions
+            {
+                ProxiedGateway = true,
+                Gateways = new List<IPEndPoint>(new[]
+                {
+                    new IPEndPoint(IPAddress.Loopback, ProxyBasePort), 
+                    new IPEndPoint(IPAddress.Loopback, ProxyBasePort + 1)
+                }),
+                PreferedGatewayIndex = 1
+            };
+
+            base.InitializeAsync(siloOptions, clientOptions).Wait();
+        }
 
         protected void DoTestCleanup()
         {
@@ -37,16 +62,18 @@ namespace UnitTests.MembershipTests
             //StopAllSilos();
         }
 
-        protected void DoClassCleanup()
-        {
-            Console.WriteLine("Test-ClassCleanup.");
-            StopAllSilos();
-        }
-
-        protected void DoClassInitialize()
+        [TestFixtureSetUp]
+        public virtual void ClassInitialize()
         {
             Console.WriteLine("Test-ClassInitialize.");
             //StopAllSilos();
+        }
+
+        [TestFixtureTearDown]
+        public void ClassCleanup()
+        {
+            Console.WriteLine("Test-ClassCleanup.");
+            StopAllSilos();
         }
 
         protected async Task Do_Liveness_OracleTest_1()
@@ -175,31 +202,10 @@ namespace UnitTests.MembershipTests
             ReminderServiceType = GlobalConfiguration.ReminderServiceProviderType.ReminderTableGrain
         };
 
-        private static readonly TestingClientOptions clientOptions = new TestingClientOptions
+        [SetUp]
+        public void TestInitialize()
         {
-            ProxiedGateway = true,
-            Gateways = new List<IPEndPoint>(new[]
-                    {
-                        new IPEndPoint(IPAddress.Loopback, TestingSiloHost.ProxyBasePort), 
-                        new IPEndPoint(IPAddress.Loopback, TestingSiloHost.ProxyBasePort + 1)
-                    }),
-            PreferedGatewayIndex = 1
-        };
-
-        public LivenessTests_MembershipGrain()
-            : base(siloOptions, clientOptions)
-        { }
-
-        [TestFixtureSetUp]
-        public void ClassInitialize()
-        {
-            DoClassInitialize();
-        }
-
-        [TestFixtureTearDown]
-        public void ClassCleanup()
-        {
-            DoClassCleanup();
+            DoTestInitialize(siloOptions);
         }
 
         [TearDown]
@@ -248,26 +254,16 @@ namespace UnitTests.MembershipTests
             ReminderServiceType = GlobalConfiguration.ReminderServiceProviderType.ReminderTableGrain
         };
 
-        public LivenessTests_AzureTable()
-            : base(siloOptions)
-        { }
+        [SetUp]
+        public void TestInitialize()
+        {
+            DoTestInitialize(siloOptions);
+        }
 
         [TearDown]
         public void TestCleanup()
         {
             DoTestCleanup();
-        }
-
-        [TestFixtureTearDown]
-        public void ClassCleanup()
-        {
-            DoClassCleanup();
-        }
-
-        [TestFixtureSetUp]
-        public void ClassInitialize()
-        {
-            DoClassInitialize();
         }
 
         [Test, Category("Functional"), Category("Membership"), Category("Azure")]
@@ -312,24 +308,14 @@ namespace UnitTests.MembershipTests
             StartPrimary = true,
             StartSecondary = true,
             DataConnectionString = StorageTestConstants.DataConnectionString,
-            LivenessType = GlobalConfiguration.LivenessProviderType.AzureTable,
+            LivenessType = GlobalConfiguration.LivenessProviderType.ZooKeeper,
             ReminderServiceType = GlobalConfiguration.ReminderServiceProviderType.ReminderTableGrain
         };
 
-        public LivenessTests_ZK()
-            : base(siloOptions)
-        { }
-
-        [TestFixtureSetUp]
-        public void ClassInitialize()
+        [SetUp]
+        public void TestInitialize()
         {
-            DoClassInitialize();
-        }
-
-        [TestFixtureTearDown]
-        public void ClassCleanup()
-        {
-            DoClassCleanup();
+            DoTestInitialize(siloOptions);
         }
 
         [TearDown]
@@ -342,7 +328,7 @@ namespace UnitTests.MembershipTests
         public async Task Liveness_ZooKeeper_1()
         {
             GlobalConfiguration config = Primary.Silo.GlobalConfig;
-            Assert.AreEqual(GlobalConfiguration.LivenessProviderType.AzureTable, config.LivenessType, "LivenessType");
+            Assert.AreEqual(GlobalConfiguration.LivenessProviderType.ZooKeeper, config.LivenessType, "LivenessType");
             await Do_Liveness_OracleTest_1();
         }
 
@@ -375,7 +361,7 @@ namespace UnitTests.MembershipTests
     //[DeploymentItem("CreateOrleansTables_SqlServer.sql")]
     public class LivenessTests_SqlServer : LivenessTestsBase
     {
-        private static IRelationalStorage relationalStorage;
+        private IRelationalStorage relationalStorage;
         private const string testDatabaseName = "OrleansTest";
 
         private static readonly TestingSiloOptions siloOptions = new TestingSiloOptions
@@ -388,12 +374,8 @@ namespace UnitTests.MembershipTests
             ReminderServiceType = GlobalConfiguration.ReminderServiceProviderType.ReminderTableGrain
         };
 
-        public LivenessTests_SqlServer()
-            : base(siloOptions)
-        { }
-
         [TestFixtureSetUp]
-        public void ClassInitialize()
+        public override void ClassInitialize()
         {
             Console.WriteLine("TestContext=");
             TestContext testContext = TestContext.CurrentContext;
@@ -430,10 +412,10 @@ namespace UnitTests.MembershipTests
             siloOptions.DataConnectionString = relationalStorage.ConnectionString;
         }
 
-        [TestFixtureTearDown]
-        public void ClassCleanup()
+        [SetUp]
+        public void TestInitialize()
         {
-            DoClassCleanup();
+            DoTestInitialize(siloOptions);
         }
 
         [TearDown]
