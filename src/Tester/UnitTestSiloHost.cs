@@ -37,6 +37,10 @@ namespace UnitTests.Tester
     //[DeploymentItem("ClientConfigurationForTesting.xml")]
     //[DeploymentItem("TestGrainInterfaces.dll")]
     //[DeploymentItem("TestGrains.dll")]
+    //
+    // TODO: NUnit does not use / require [DeploymentItem] tags, 
+    //       so we can probably remove this class after completing the switch over to NUnit.
+    //
     public class UnitTestSiloHost : TestingSiloHost
     {
         public UnitTestSiloHost() // : base()

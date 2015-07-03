@@ -37,7 +37,6 @@ namespace UnitTests.MembershipTests
     /// Tests for operation of Orleans SiloInstanceManager using ZookeeperStore - Requires access to external Zookeeper storage
     /// </summary>
     [TestFixture]
-    //[DeploymentItem("OrleansZooKeeperUtils.dll")]
     public class ZookeeperMembershipTableTests
     {
         private string deploymentId;

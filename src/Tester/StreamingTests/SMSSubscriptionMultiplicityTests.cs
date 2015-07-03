@@ -31,8 +31,6 @@ using UnitTests.Tester;
 
 namespace UnitTests.StreamingTests
 {
-    //[DeploymentItem("OrleansConfigurationForStreamingUnitTests.xml")]
-    //[DeploymentItem("OrleansProviders.dll")]
     [TestFixture]
     public class SMSSubscriptionMultiplicityTests : UnitTestSiloHost
     {

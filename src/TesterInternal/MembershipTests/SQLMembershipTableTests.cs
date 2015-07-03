@@ -42,7 +42,6 @@ namespace UnitTests.MembershipTests
     /// Tests for operation of Orleans Membership Table using SqlServer - Requires access to SqlServer instance on this machine.
     /// </summary>
     [TestFixture]
-    //[DeploymentItem("CreateOrleansTables_SqlServer.sql")]
     public class SQLMembershipTableTests
     {
         private string deploymentId;

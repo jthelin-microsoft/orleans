@@ -32,8 +32,6 @@ using UnitTests.Tester;
 
 namespace UnitTests.StreamingTests
 {
-    //[DeploymentItem("OrleansConfigurationForStreamingUnitTests.xml")]
-    //[DeploymentItem("OrleansProviders.dll")]
     [TestFixture]
     public class AQSubscriptionMultiplicityTests : UnitTestSiloHost
     {
@@ -52,7 +50,6 @@ namespace UnitTests.StreamingTests
             runner = new SubscriptionMultiplicityTestRunner(AQStreamProviderName, GrainClient.Logger);
         }
 
-        // Use ClassCleanup to run code after all tests in a class have run
         [TestFixtureTearDown]
         public static void MyClassCleanup()
         {

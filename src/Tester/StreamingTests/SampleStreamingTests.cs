@@ -33,8 +33,6 @@ using UnitTests.Tester;
 
 namespace UnitTests.StreamingTests
 {
-    //[DeploymentItem("OrleansConfigurationForStreamingUnitTests.xml")]
-    //[DeploymentItem("OrleansProviders.dll")]
     [TestFixture]
     public class SampleStreamingTests : UnitTestSiloHost
     {
@@ -55,7 +53,6 @@ namespace UnitTests.StreamingTests
         {
         }
 
-        // Use ClassCleanup to run code after all tests in a class have run
         [TestFixtureTearDown]
         public void MyClassCleanup()
         {

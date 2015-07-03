@@ -358,7 +358,6 @@ namespace UnitTests.MembershipTests
     }
 
     [TestFixture]
-    //[DeploymentItem("CreateOrleansTables_SqlServer.sql")]
     public class LivenessTests_SqlServer : LivenessTestsBase
     {
         private IRelationalStorage relationalStorage;
