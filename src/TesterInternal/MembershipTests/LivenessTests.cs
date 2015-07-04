@@ -59,7 +59,7 @@ namespace UnitTests.MembershipTests
         {
             TestContext testContext = TestContext.CurrentContext;
             Console.WriteLine("Test {0} completed - Outcome = {1}", testContext.Test.Name, testContext.Result.Status);
-            //StopAllSilos();
+            StopAllSilos();
         }
 
         [TestFixtureSetUp]
@@ -164,8 +164,10 @@ namespace UnitTests.MembershipTests
             {
                 long key = i + 1;
                 ILivenessTestGrain g1 = grains[i];
-                Assert.AreEqual(key, g1.GetPrimaryKeyLong());
-                Assert.AreEqual(key.ToString(CultureInfo.InvariantCulture), await g1.GetLabel());
+                long pk = g1.GetPrimaryKeyLong();
+                Assert.AreEqual(key, pk, "GetPrimaryKey");
+                string label = await g1.GetLabel();
+                Assert.AreEqual(key.ToString(CultureInfo.InvariantCulture), label, "GetLabel");
                 await LogGrainIdentity(logger, g1);
             }
 
