@@ -378,7 +378,6 @@ Return System.Threading.Tasks.Task.FromResult(CObj(True))
         {
             RecordReferencedNamespaceAndAssembly(typeof(GrainId));
             RecordReferencedNamespaceAndAssembly(iface.Type);
-            var interfaceId = GrainInterfaceData.GetGrainInterfaceId(iface.Type);
             var interfaceName = iface.InterfaceTypeName;
 
             Action<string> add = codeFmt =>

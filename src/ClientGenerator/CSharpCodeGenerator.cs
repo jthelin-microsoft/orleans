@@ -377,7 +377,6 @@ namespace Orleans.CodeGeneration
         {
             RecordReferencedNamespaceAndAssembly(typeof(GrainId));
             RecordReferencedNamespaceAndAssembly(iface.Type);
-            var interfaceId = GrainInterfaceData.GetGrainInterfaceId(iface.Type);
             Action<string> add = codeFmt => factoryClass.Members.Add(
                 new CodeSnippetTypeMember(String.Format(codeFmt, iface.InterfaceTypeName)));
 

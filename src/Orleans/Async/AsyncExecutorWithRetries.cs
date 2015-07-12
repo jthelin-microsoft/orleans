@@ -35,7 +35,6 @@ namespace Orleans
     internal static class AsyncExecutorWithRetries
     {
         public static readonly int INFINITE_RETRIES = -1;
-        private static readonly Func<Exception, int, bool> retryAllExceptionsFilter = (Exception exc, int i) => true;
 
         /// <summary>
         /// Execute a given function a number of times, based on retry configuration parameters.

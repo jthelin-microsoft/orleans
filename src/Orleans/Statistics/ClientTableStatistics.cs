@@ -138,7 +138,6 @@ namespace Orleans.Runtime
             }
             catch (Exception exc)
             {
-                var e = exc.GetBaseException();
                 logger.Error(ErrorCode.Runtime_Error_100101, String.Format("Exception occurred during metrics reporter."), exc);
             }
         }

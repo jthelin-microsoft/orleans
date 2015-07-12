@@ -54,7 +54,6 @@ namespace Orleans.Runtime
         /// <summary>
         /// Use a graph partitioning algorithm
         /// </summary>
-        internal static PlacementStrategy GraphPartitionPlacement;
 
         internal static void InitDefaultGrainStrategies()
         {
