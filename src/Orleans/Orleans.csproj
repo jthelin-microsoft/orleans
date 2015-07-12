@@ -1,13 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <DownloadNuGetExe>true</DownloadNuGetExe>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>10.0.20506</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BC1BD60C-E7D8-4452-A21C-290AEC8E2E74}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -52,6 +50,8 @@
     <Prefer32Bit>false</Prefer32Bit>
     <WarningsAsErrors>4014</WarningsAsErrors>
     <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
@@ -68,6 +68,7 @@
     <DocumentationFile>obj\Release\Orleans.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
     <WarningsAsErrors>4014</WarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -398,7 +399,7 @@
       <CodeGenSrcFiles Include="$(SolutionDir)ClientGenerator\*\*.cs" />
     </ItemGroup>
     <PropertyGroup>
-      <CodeGenToolSources>@(CodeGenSrcFiles->'%(Identity)')</CodeGenToolSources>
+      <CodeGenToolSources>@(CodeGenSrcFiles-&gt;'%(Identity)')</CodeGenToolSources>
     </PropertyGroup>
     <Message Text="CodeGenToolSources extracted: $(CodeGenToolSources)" Importance="high" />
     <!-- Compile orleans dll -->
@@ -425,9 +426,9 @@
     <WriteLinesToFile File="$(ArgsFile)" Lines="/in:$(IntermediateOutputPath)$(TargetName)$(TargetExt)" />
     <WriteLinesToFile File="$(ArgsFile)" Lines="/key:$(AssemblyOriginatorKeyFile)" />
     <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$([MSBuild]::Escape($(DefineConstants)))" />
-    <WriteLinesToFile File="$(ArgsFile)" Lines="@(Import->'/imports:%(Identity)')" />
+    <WriteLinesToFile File="$(ArgsFile)" Lines="@(Import-&gt;'/imports:%(Identity)')" />
     <WriteLinesToFile File="$(ArgsFile)" Lines="/rns:$(RootNamespace)" />
-    <WriteLinesToFile File="$(ArgsFile)" Lines="@(ReferencePath->'/r:%(Identity)')" />
+    <WriteLinesToFile File="$(ArgsFile)" Lines="@(ReferencePath-&gt;'/r:%(Identity)')" />
     <WriteLinesToFile File="$(ArgsFile)" Lines="/fsharp:$(FSharpCompilerPath)" />
     <WriteLinesToFile File="$(ArgsFile)" Lines="/cwd:$(ProjectDir)" />
     <WriteLinesToFile File="$(ArgsFile)" Lines="/config:$(Configuration)" />
@@ -436,6 +437,6 @@
     <WriteLinesToFile File="$(ArgsFile)" Lines="/OptionStrict:$(OptionStrict)" />
     <WriteLinesToFile File="$(ArgsFile)" Lines="/OptionInfer:$(OptionInfer)" />
     <WriteLinesToFile File="$(ArgsFile)" Lines="/MyType:$(MyType)" />
-    <WriteLinesToFile File="$(ArgsFile)" Lines="@(Compile->'/src:%(Identity)')" />
+    <WriteLinesToFile File="$(ArgsFile)" Lines="@(Compile-&gt;'/src:%(Identity)')" />
   </Target>
 </Project>
