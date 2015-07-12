@@ -32,7 +32,9 @@ namespace Orleans.Runtime
     {
         private readonly IMessagingConfiguration config;
         private RuntimeQueue<T> requestQueue;
+        #pragma warning disable 414
         private QueueTrackingStatistic queueTracking;
+        #pragma warning restore 414
 
         protected AsynchQueueAgent(string nameSuffix, IMessagingConfiguration cfg)
             : base(nameSuffix)

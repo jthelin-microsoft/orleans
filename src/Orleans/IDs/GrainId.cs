@@ -152,7 +152,7 @@ namespace Orleans.Runtime
         internal string GetPrimaryKeyString()
         {
             string key;
-            var tmp = GetPrimaryKey(out key);
+            GetPrimaryKey(out key);
             return key;
         }
 

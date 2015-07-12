@@ -35,8 +35,10 @@ namespace Orleans.Runtime
         private static CounterStatistic timedOutRequests;
         private static CounterStatistic totalAppRequests;
         private static CounterStatistic appRequestsTotalLatency;
+        #pragma warning disable 414
         private static FloatValueStatistic appRequestsAverageLatency;
-        
+        #pragma warning restore 414
+
         internal static void Init(TimeSpan responseTimeout)
         {
             if (!StatisticsCollector.CollectApplicationRequestsStats) return;
