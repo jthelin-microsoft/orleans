@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
+  <PropertyGroup Condition=" '$(OS)' != 'Unix' ">
     <DownloadNuGetExe>true</DownloadNuGetExe>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
+    <_ExePrefix>mono</_ExePrefix>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -413,7 +416,7 @@
       <CodeGenToolExecCmd>"$(ProjectDir)$(IntermediateOutputPath)Generated\ClientGenerator.exe" /nomerge /bootstrap "/in:$(IntermediateOutputPath)Generated\$(TargetName)$(TargetExt)" "/keyfile:$(AssemblyOriginatorKeyFile)" "/reference:@(ReferencePath)" "/sources:@(Compile)" "/define:$(DefineConstants)" $(ClientGenOptions)</CodeGenToolExecCmd>
     </PropertyGroup>
     <Message Text="[OrleansDllBootstrapUsingCodeGen] - CodeGen Cmd = $(CodeGenToolExecCmd)" />
-    <Exec Command="$(CodeGenToolExecCmd)" />
+    <Exec Command="$(_ExePrefix) $(CodeGenToolExecCmd)" />
   </Target>
   <Target Name="WriteArgsToFileForDebugging" AfterTargets="BeforeCompile" BeforeTargets="CoreCompile" Inputs="@(Compile);@(ReferencePath)" Outputs="$(ProjectDir)$(IntermediateOutputPath)$(TargetName)$(TargetExt)">
     <MakeDir Directories="$(IntermediateOutputPath)Generated" />
