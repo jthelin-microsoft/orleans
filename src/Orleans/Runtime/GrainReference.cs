@@ -45,7 +45,7 @@ namespace Orleans.Runtime
 
         [NonSerialized] private const bool USE_DEBUG_CONTEXT = true;
 
-        [NonSerialized] private const bool USE_DEBUG_CONTEXT_PARAMS = false;
+        [NonSerialized] private static bool USE_DEBUG_CONTEXT_PARAMS = false;
 
         [NonSerialized]
         private readonly bool isUnordered = false;
