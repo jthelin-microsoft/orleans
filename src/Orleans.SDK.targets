@@ -96,7 +96,10 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     <WriteLinesToFile Overwrite="true" File="$(ArgsFile)" Lines="/nomerge"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/in:$(IntermediateOutputPath)$(TargetName)$(TargetExt)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/key:$(SnkFile)"/>
-    <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$([MSBuild]::Escape($(DefineConstants)))"/>
+    <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$([MSBuild]::Escape($(DefineConstants)))"
+        Condition=" '$(OS)' != 'Unix' " />
+    <WriteLinesToFile File="$(ArgsFile)" Lines="/define:$(DefineConstants)"
+        Condition=" '$(OS)' == 'Unix' " />
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(Import->'/imports:%(Identity)')"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/rns:$(RootNamespace)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(ReferencePath->'/r:%(Identity)')"/>
@@ -140,7 +143,10 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     <WriteLinesToFile Overwrite="true" File="$(ArgsFile)" Lines="/svr"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/in:$(IntermediateOutputPath)$(TargetName)$(TargetExt)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/key:$(SnkFile)"/>
-    <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$([MSBuild]::Escape($(DefineConstants)))"/>
+    <WriteLinesToFile File="$(ArgsFile)" Lines="/d:$([MSBuild]::Escape($(DefineConstants)))"
+        Condition=" '$(OS)' != 'Unix' " />
+    <WriteLinesToFile File="$(ArgsFile)" Lines="/define:$(DefineConstants)"
+        Condition=" '$(OS)' == 'Unix' " />
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(Import->'/imports:%(Identity)')"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="/rns:$(RootNamespace)"/>
     <WriteLinesToFile File="$(ArgsFile)" Lines="@(ReferencePath->'/r:%(Identity)')"/>
