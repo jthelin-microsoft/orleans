@@ -90,7 +90,6 @@ namespace Orleans.CodeGeneration
              414, // CS0414 - The private field 'F' is assigned but its value is never used.
              649, // CS0649 - Field 'F' is never assigned to, and will always have its default value.
              693, // CS0693 - Type parameter 'type parameter' has the same name as the type parameter from outer type 'T'
-            1591, // CS1591 - Missing XML comment for publicly visible type or member 'Type_or_Member'
             1998  // CS1998 - This async method lacks 'await' operators and will run synchronously
         };
 

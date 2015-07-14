@@ -406,7 +406,7 @@
     <Message Text="CodeGenToolSources extracted: $(CodeGenToolSources)" Importance="high" />
     <!-- Compile orleans dll -->
     <Message Text="[OrleansDllBootstrapUsingCodeGen] - Compiling Orleans.dll for boot strap" Importance="high" />
-    <csc Sources="@(Compile)" OutputAssembly="$(ProjectDir)$(IntermediateOutputPath)Generated\$(TargetName)$(TargetExt)" EmitDebugInformation="true" PdbFile="$(PdbFile)" Platform="$(PlatformTarget)" References="$(CodeGenToolReferences)" DefineConstants="$(DefineConstants);EXCLUDE_CODEGEN" KeyFile="$(AssemblyOriginatorKeyFile)" TargetType="$(OutputType)" />
+    <csc Sources="@(Compile)" OutputAssembly="$(ProjectDir)$(IntermediateOutputPath)Generated\$(TargetName)$(TargetExt)" EmitDebugInformation="true" PdbFile="$(PdbFile)" Platform="$(PlatformTarget)" References="$(CodeGenToolReferences)" DefineConstants="$(DefineConstants);EXCLUDE_CODEGEN" KeyFile="$(AssemblyOriginatorKeyFile)" TargetType="$(OutputType)" WarningLevel="1" />
     <!-- Compile codegen tool exe -->
     <Message Text="[OrleansDllBootstrapUsingCodeGen] - Compiling Orleans codegen tool for BootStrap" Importance="high" />
     <csc Sources="$(CodeGenToolSources)" OutputAssembly="$(ProjectDir)$(IntermediateOutputPath)Generated\ClientGenerator.exe" EmitDebugInformation="true" PdbFile="$(PdbFile)" Platform="$(PlatformTarget)" References="$(CodeGenToolReferences);$(ProjectDir)$(IntermediateOutputPath)Generated\$(TargetName)$(TargetExt)" DefineConstants="$(DefineConstants);CLIENTGEN_PROJECT" KeyFile="$(AssemblyOriginatorKeyFile)" />
