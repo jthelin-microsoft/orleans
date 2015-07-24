@@ -117,8 +117,6 @@ namespace UnitTests.General
     [TestFixture]
     public class InterfaceRulesTests
     {
-        public TestContext TestContext { get; set; }
-
         #region simple interfaces
 
         [Test, Category("BVT"), Category("Functional"), Category("CodeGen")]
