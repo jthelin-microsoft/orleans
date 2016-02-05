@@ -61,7 +61,7 @@ namespace Orleans.Runtime
                 // initialize serialization for all assemblies to be loaded.
                 AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
 
-                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
                 // initialize serialization for already loaded assemblies.
                 CodeGeneratorManager.GenerateAndCacheCodeForAllAssemblies();
@@ -90,6 +90,11 @@ namespace Orleans.Runtime
         /// <param name="assembly">The assembly to process.</param>
         private static void ProcessAssembly(Assembly assembly)
         {
+            string assemblyName = assembly.GetName().Name;
+            if (Logger.IsVerbose3)
+            {
+                Logger.Verbose3("Processing assembly {0}", assemblyName);
+            }
             // If the assembly is loaded for reflection only avoid processing it.
             if (assembly.ReflectionOnly)
             {
@@ -135,8 +140,13 @@ namespace Orleans.Runtime
             }
 
             // Process each type in the assembly.
-            foreach (var type in assemblyTypes)
+            foreach (TypeInfo type in assemblyTypes)
             {
+                string typeName = type.FullName;
+                if (Logger.IsVerbose3)
+                {
+                    Logger.Verbose3("Processing type {0}", typeName);
+                }
                 if (shouldProcessSerialization)
                 {
                     SerializationManager.FindSerializationInfo(type);
