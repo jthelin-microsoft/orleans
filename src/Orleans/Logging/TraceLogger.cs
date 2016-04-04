@@ -973,57 +973,40 @@ namespace Orleans.Runtime
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         internal static void Flush()
         {
-            try
+            Utils.SafeExecute(() =>
             {
                 // Flush trace logs to disk
                 Trace.Flush();
 
                 foreach (IFlushableLogConsumer consumer in LogConsumers.OfType<IFlushableLogConsumer>())
                 {
-                    try
-                    {
-                        consumer.Flush();
-                    }
-                    catch (Exception) { }
+                    Utils.SafeExecute(() => consumer.Flush());
                 }
 
-                foreach (var consumer in TelemetryConsumers)
+                foreach (ITelemetryConsumer consumer in TelemetryConsumers)
                 {
-                    try
-                    {
-                        consumer.Flush();
-                    }
-                    catch (Exception) { }
+                    Utils.SafeExecute(() => consumer.Flush());
                 }
-            }
-            catch (Exception) { }
+            });
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         internal static void Close()
         {
             Flush();
-            try
+
+            Utils.SafeExecute(() =>
             {
                 foreach (ICloseableLogConsumer consumer in LogConsumers.OfType<ICloseableLogConsumer>())
                 {
-                    try
-                    {
-                        consumer.Close();
-                    }
-                    catch (Exception) { }
+                    Utils.SafeExecute(() => consumer.Close());
                 }
 
-                foreach (var consumer in TelemetryConsumers)
+                foreach (ITelemetryConsumer consumer in TelemetryConsumers)
                 {
-                    try
-                    {
-                        consumer.Close();
-                    }
-                    catch (Exception) { }
+                    Utils.SafeExecute(() => consumer.Close());
                 }
-            }
-            catch (Exception) { }
+            });
         }
 
         /// <summary>
