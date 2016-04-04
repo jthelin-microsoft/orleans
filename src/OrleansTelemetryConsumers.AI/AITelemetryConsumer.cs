@@ -5,10 +5,27 @@ using Orleans.Telemetry;
 
 namespace Orleans.TelemetryConsumers.AI
 {
+    using TelemetryClient = Microsoft.ApplicationInsights.TelemetryClient;
+    using TelemetryConfiguration = Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration;
+    using SeverityLevel = Microsoft.ApplicationInsights.DataContracts.SeverityLevel;
+
+    /// <summary>
+    /// Orleans telemetry provider for Azure Application Insights.
+    /// </summary>
+    /// <example>
+    /// To turn on, create an <c>ApplicationInsights.config</c> file and add the following elements to the Orleans silo config file:
+    /// &lt;Telemetry&gt;
+    ///   &lt;TelemetryConsumer 
+    ///     Name="AppInsights"
+    ///     Type="Orleans.TelemetryConsumers.AI.AITelemetryConsumer"
+    ///     Assembly="OrleansTelemetryConsumers.AI"
+    ///   /&gt;
+    /// &lt;/Telemetrygt;
+    /// </example>
     public class AITelemetryConsumer : ITraceTelemetryConsumer, IEventTelemetryConsumer, IExceptionTelemetryConsumer, 
         IDependencyTelemetryConsumer, IMetricTelemetryConsumer, IRequestTelemetryConsumer
     {
-        private TelemetryClient _client;
+        private readonly TelemetryClient _client;
 
         public AITelemetryConsumer()
         {
@@ -17,27 +34,27 @@ namespace Orleans.TelemetryConsumers.AI
 
         public AITelemetryConsumer(string instrumentationKey)
         {
-            _client = new TelemetryClient(new Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration { InstrumentationKey = instrumentationKey });
+            _client = new TelemetryClient(new TelemetryConfiguration { InstrumentationKey = instrumentationKey });
         }
 
         public void DecrementMetric(string name)
         {
-            _client.TrackMetric(name, -1, null);
+            _client.TrackMetric(name, -1);
         }
 
         public void DecrementMetric(string name, double value)
         {
-            _client.TrackMetric(name, value * -1, null);
+            _client.TrackMetric(name, value * -1);
         }
 
         public void IncrementMetric(string name)
         {
-            _client.TrackMetric(name, 1, null);
+            _client.TrackMetric(name, 1);
         }
 
         public void IncrementMetric(string name, double value)
         {
-            _client.TrackMetric(name, value, null);
+            _client.TrackMetric(name, value);
         }
 
         public void TrackDependency(string dependencyName, string commandName, DateTimeOffset startTime, TimeSpan duration, bool success)
@@ -79,7 +96,7 @@ namespace Orleans.TelemetryConsumers.AI
         {
             if (properties != null)
             {
-                _client.TrackTrace(message, Microsoft.ApplicationInsights.DataContracts.SeverityLevel.Information, properties);
+                _client.TrackTrace(message, SeverityLevel.Information, properties);
             }
             else
             {
@@ -94,25 +111,25 @@ namespace Orleans.TelemetryConsumers.AI
 
         public void TrackTrace(string message, Severity severity, IDictionary<string, string> properties)
         {
-            Microsoft.ApplicationInsights.DataContracts.SeverityLevel sev;
+            SeverityLevel sev;
 
             switch (severity)
             {
                 case Severity.Off:
                     return;
                 case Severity.Error:
-                    sev = Microsoft.ApplicationInsights.DataContracts.SeverityLevel.Error;
+                    sev = SeverityLevel.Error;
                     break;
                 case Severity.Warning:
-                    sev = Microsoft.ApplicationInsights.DataContracts.SeverityLevel.Warning;
+                    sev = SeverityLevel.Warning;
                     break;
                 case Severity.Verbose:
                 case Severity.Verbose2:
                 case Severity.Verbose3:
-                    sev = Microsoft.ApplicationInsights.DataContracts.SeverityLevel.Verbose;
+                    sev = SeverityLevel.Verbose;
                     break;
                 default:
-                    sev = Microsoft.ApplicationInsights.DataContracts.SeverityLevel.Information;
+                    sev = SeverityLevel.Information;
                     break;
             }
 
