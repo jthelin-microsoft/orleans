@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Orleans.Runtime.Configuration;
 using Orleans.Serialization;
+using Orleans.Telemetry;
 
 namespace Orleans.Runtime
 {

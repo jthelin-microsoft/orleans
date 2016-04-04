@@ -1,7 +1,8 @@
-﻿using Orleans.Runtime;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Orleans.Runtime;
+using Orleans.Telemetry;
 using NRClient = NewRelic.Api.Agent.NewRelic;
 
 namespace Orleans.TelemetryConsumers.NewRelic

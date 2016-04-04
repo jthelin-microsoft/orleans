@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Orleans.Runtime;
 
-namespace Orleans.Runtime
+namespace Orleans.Telemetry
 {
     public interface IMetricTelemetryConsumer : ITelemetryConsumer
     {

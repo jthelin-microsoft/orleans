@@ -1,7 +1,7 @@
-using Microsoft.ApplicationInsights;
-using Orleans.Runtime;
 using System;
 using System.Collections.Generic;
+using Orleans.Runtime;
+using Orleans.Telemetry;
 
 namespace Orleans.TelemetryConsumers.AI
 {
