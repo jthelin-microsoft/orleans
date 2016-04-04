@@ -35,7 +35,7 @@ namespace Orleans.Runtime.Configuration
                         throw new FormatException("Missing 'Type' attribute on TelemetryConsumer element.");
 
                     if (!grandchild.HasAttribute("Assembly"))
-                        throw new FormatException("Missing 'Type' attribute on TelemetryConsumer element.");
+                        throw new FormatException("Missing 'Assembly' attribute on TelemetryConsumer element.");
 
                     var className = grandchild.Attributes["Type"].Value;
                     var assemblyName = new AssemblyName(grandchild.Attributes["Assembly"].Value);
