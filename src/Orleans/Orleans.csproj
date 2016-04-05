@@ -390,7 +390,28 @@
   </Target>
   <Target Name="LogBuildProperties" BeforeTargets="CoreCompile" AfterTargets="VersionInit">
     <!-- Show values of some useful properties -->
-    <Message Importance="high" Text="Orleans.csproj -- Build Properties =  &#xD;&#xA;TeamProject=$(TeamProject)&#xD;&#xA;SolutionRoot=$(SolutionRoot)&#xD;&#xA;SourcesDirectory=$(SourcesDirectory)&#xD;&#xA;BinariesDirectory=$(BinariesDirectory)&#xD;&#xA;BinariesRoot=$(BinariesRoot)&#xD;&#xA;BuildDirectory=$(BuildDirectory)&#xD;&#xA;BuildProjectFolderPath=$(BuildProjectFolderPath)&#xD;&#xA;MSBuildProjectDirectory=$(MSBuildProjectDirectory)&#xD;&#xA;OutputPath=$(OutputPath)&#xD;&#xA;OutDir=$(OutDir)&#xD;&#xA;DropLocation=$(DropLocation)&#xD;&#xA;PackagesDirectory=$(PackagesDirectory)&#xD;&#xA;BuildNumber=$(BuildNumber)&#xD;&#xA;builduri=$(builduri)&#xD;&#xA;BuildUri=$(BuildUri)&#xD;&#xA;MSBuildForwardPropertiesFromChild=$(MSBuildForwardPropertiesFromChild)&#xD;&#xA;BuildingInsideVisualStudio=$(BuildingInsideVisualStudio)&#xD;&#xA;IsDesktopBuild=$(IsDesktopBuild)" />
+    <Message Importance="high" Text="Orleans.csproj -- Build Properties =  
+TeamProject=$(TeamProject)
+SolutionRoot=$(SolutionRoot)
+SourcesDirectory=$(SourcesDirectory)
+BinariesDirectory=$(BinariesDirectory)
+BinariesRoot=$(BinariesRoot)
+BuildDirectory=$(BuildDirectory)
+BuildProjectFolderPath=$(BuildProjectFolderPath)
+MSBuildAssemblyVersion=$(MSBuildAssemblyVersion)
+MSBuildFrameworkToolsPath=$(MSBuildFrameworkToolsPath)
+MSBuildToolsPath=$(MSBuildToolsPath)
+MSBuildProjectDirectory=$(MSBuildProjectDirectory)
+OutputPath=$(OutputPath)
+OutDir=$(OutDir)
+DropLocation=$(DropLocation)
+PackagesDirectory=$(PackagesDirectory)
+BuildNumber=$(BuildNumber)
+builduri=$(builduri)
+BuildUri=$(BuildUri)
+MSBuildForwardPropertiesFromChild=$(MSBuildForwardPropertiesFromChild)
+BuildingInsideVisualStudio=$(BuildingInsideVisualStudio)
+IsDesktopBuild=$(IsDesktopBuild)" />
   </Target>
   <Target Name="OrleansDllBootstrapUsingCodeGen" AfterTargets="BeforeCompile" BeforeTargets="CoreCompile" Inputs="@(Compile);@(ReferencePath)" Outputs="$(ProjectDir)$(IntermediateOutputPath)Generated\$(TargetName)$(TargetExt)" Condition="'$(Bootstrap)' != 'true'">
     <Message Text="[OrleansDllBootstrapUsingCodeGen] - Bootstrapping the Orleans.dll" Importance="high" />
