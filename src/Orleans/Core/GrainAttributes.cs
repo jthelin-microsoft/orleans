@@ -173,6 +173,17 @@ namespace Orleans
         }
 
         /// <summary>
+        /// Marks a grain class as being a pinned grain, which will not move from the silo it was originally created on.
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+        public sealed class PinnedGrainAttribute : PlacementAttribute
+        {
+            public PinnedGrainAttribute() :
+                base(PinnedGrainPlacement.Singleton)
+            { }
+        }
+
+        /// <summary>
         /// Marks a grain class as using the <c>ActivationCountBasedPlacement</c> policy.
         /// </summary>
         [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]

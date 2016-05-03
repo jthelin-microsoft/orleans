@@ -1,4 +1,5 @@
 using System;
+using Orleans.Placement;
 using Orleans.Runtime.Configuration;
 
 namespace Orleans.Runtime
@@ -30,6 +31,7 @@ namespace Orleans.Runtime
         {
             RandomPlacement.InitializeClass();
             PreferLocalPlacement.InitializeClass();
+            PinnedGrainPlacement.InitializeClass();
             StatelessWorkerPlacement.InitializeClass(NodeConfiguration.DEFAULT_MAX_LOCAL_ACTIVATIONS);
             SystemPlacement.InitializeClass();
             ActivationCountBasedPlacement.InitializeClass();
@@ -44,6 +46,10 @@ namespace Orleans.Runtime
             else if (str.Equals(typeof(PreferLocalPlacement).Name))
             {
                 return PreferLocalPlacement.Singleton;
+            }
+            else if (str.Equals(typeof(PinnedGrainPlacement).Name))
+            {
+                return PinnedGrainPlacement.Singleton;
             }
             else if (str.Equals(typeof(SystemPlacement).Name))
             {
