@@ -161,6 +161,17 @@ namespace Orleans
         }
 
         /// <summary>
+        /// Marks a grain class as using the <c>PinnedGrainPlacement</c> policy.
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+        public sealed class PinnedGrainPlacementAttribute : PlacementAttribute
+        {
+            public PinnedGrainPlacementAttribute() :
+                base(PinnedGrainPlacement.Singleton)
+            { }
+        }
+
+        /// <summary>
         /// Marks a grain class as using the <c>ActivationCountBasedPlacement</c> policy.
         /// </summary>
         [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]

@@ -101,6 +101,7 @@
     <Compile Include="RequestContextTestGrain.cs" />
     <Compile Include="SerializationGenerationGrain.cs" />
     <Compile Include="ServiceType.cs" />
+    <Compile Include="PinnedGrains.cs" />
     <Compile Include="SimpleGenericGrain.cs" />
     <Compile Include="MultipleSubscriptionConsumerGrain.cs" />
     <Compile Include="ConcreteGrainsWithGenericInterfaces.cs" />

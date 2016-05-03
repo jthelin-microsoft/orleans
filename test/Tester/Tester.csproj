@@ -150,6 +150,7 @@
     <Compile Include="MethodInterceptionTests.cs" />
     <Compile Include="BaseClusterFixture.cs" />
     <Compile Include="General\JsonGrainTests.cs" />
+    <Compile Include="PinnedGrainTests.cs" />
     <Compile Include="SerializationTests\DeepCopyTests.cs" />
     <Compile Include="StreamingTests\AQClientStreamTests.cs" />
     <Compile Include="StreamingTests\ClientStreamTestRunner.cs" />

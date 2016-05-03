@@ -864,6 +864,7 @@ namespace Orleans
         Placement_RuntimeStatisticsUpdateFailure_2  = PlacementBase + 2,
         Placement_RuntimeStatisticsUpdateFailure_3  = PlacementBase + 3,
         Placement_ActivationCountBasedDirector_NoSilos = PlacementBase + 4,
+        Placement_PinndeGrain_MovedSilo             = PlacementBase + 5,
 
         StorageProviderBase                     = Runtime + 2200,
         StorageProvider_ReadFailed              = StorageProviderBase + 2,

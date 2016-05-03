@@ -98,6 +98,7 @@
     <Compile Include="Core\InterceptedMethodInvoker.cs" />
     <Compile Include="Core\InvocationMethodInfoMap.cs" />
     <Compile Include="Core\IStatefulGrain.cs" />
+    <Compile Include="Placement\PinnedGrainPlacement.cs" />
     <Compile Include="Providers\DefaultServiceProvider.cs" />
     <Compile Include="GrainDirectory\MultiClusterStatus.cs" />
     <Compile Include="Runtime\RingRange.cs" />

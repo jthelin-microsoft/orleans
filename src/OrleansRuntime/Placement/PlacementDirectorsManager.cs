@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Orleans.Placement;
 using Orleans.Runtime.Configuration;
 
 namespace Orleans.Runtime.Placement
@@ -22,6 +22,7 @@ namespace Orleans.Runtime.Placement
             Instance = new PlacementDirectorsManager();
             Instance.Register<RandomPlacement, RandomPlacementDirector>();
             Instance.Register<PreferLocalPlacement, PreferLocalPlacementDirector>();
+            Instance.Register<PinnedGrainPlacement, PinnedGrainPlacementDirector>();
             Instance.Register<StatelessWorkerPlacement, StatelessWorkerDirector>();
             Instance.Register<ActivationCountBasedPlacement, ActivationCountPlacementDirector>();
 

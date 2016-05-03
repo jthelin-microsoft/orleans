@@ -72,6 +72,7 @@
     <Compile Include="Messaging\IInboundMessageQueue.cs" />
     <Compile Include="Messaging\IOutboundMessageQueue.cs" />
     <Compile Include="Placement\ISiloStatisticsChangeListener.cs" />
+    <Compile Include="Placement\PinnedGrainPlacementDirector.cs" />
     <Compile Include="Placement\PlacementDirectorsManager.cs" />
     <Compile Include="Placement\ClientObserversPlacementDirector.cs" />
     <Compile Include="Placement\PreferLocalPlacementDirector.cs" />
